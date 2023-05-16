@@ -1,61 +1,61 @@
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\java\JavaFeedsPullPreconditions.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\soap\SoapUsersServer.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\soap\SoapUsersWebService.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\java\JavaFeedsPreconditions.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\java\FeedsPush.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\utils\Sleep.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\soap\FeedsService.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\clients\soap\SoapFeedsClient.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\java\JavaFeedsPush.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\java\AbstractServer.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\clients\soap\SoapFeedsPushClient.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\clients\Clients.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\rest\RestResource.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\soap\SoapFeedsServer.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\clients\rest\RestFeedsClient.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\soap\FeedsException.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\soap\SoapFeedsPushWebService.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\rest\RestUsersResource.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\Message.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\clients\ClientFactory.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\discovery\Discovery.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\rest\FeedsServicePull.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\clients\rest\RestClient.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\rest\RestFeedsPullResource.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\rest\RestFeedsServer.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\java\Users.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\soap\push\FeedsService.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\clients\soap\SoapClient.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\java\Result.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\rest\FeedsServicePush.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\Domain.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\rest\GenericExceptionMapper.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\java\JavaFeedsPull.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\java\JavaFeedsCommon.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\soap\SoapFeedsPullWebService.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\soap\SoapWebService.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\java\Feeds.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\utils\Args.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\rest\RestUsersServer.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\PushMessage.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\soap\pull\FeedsService.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\clients\rest\RestFeedsPullClient.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\clients\rest\RestFeedsPushClient.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\soap\UsersException.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\soap\UsersService.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\rest\UsersService.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\clients\rest\RestUsersClient.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\User.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\soap\AbstractSoapServer.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\java\FeedsPull.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\rest\CustomLoggingFilter.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\clients\soap\SoapUsersClient.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\rest\RestFeedsPushResource.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\java\JavaUsers.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\utils\IP.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\rest\RestFeedsResource.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\rest\AbstractRestServer.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\api\rest\FeedsService.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\clients\soap\SoapFeedsPullClient.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\soap\SoapFeedsWebService.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto2\sd2223-trab1-main\src\sd2223\trab2\servers\java\JavaFeedsPushPreconditions.java
+/media/sf_Projeto-2/src/sd2223/trab1/clients/rest/RestFeedsClient.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/java/AbstractServer.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/rest/RestFeedsResource.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/java/Users.java
+/media/sf_Projeto-2/src/sd2223/trab1/clients/rest/RestFeedsPushClient.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/rest/RestUsersServer.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/rest/FeedsServicePush.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/rest/RestFeedsPushResource.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/soap/FeedsService.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/java/JavaUsers.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/rest/RestFeedsServer.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/java/JavaFeedsPull.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/Domain.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/Message.java
+/media/sf_Projeto-2/src/sd2223/trab1/clients/soap/SoapFeedsPullClient.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/soap/SoapFeedsPushWebService.java
+/media/sf_Projeto-2/src/sd2223/trab1/clients/rest/RestUsersClient.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/java/JavaFeedsPullPreconditions.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/soap/UsersService.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/soap/UsersException.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/rest/RestUsersResource.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/soap/SoapFeedsServer.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/java/JavaFeedsPreconditions.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/User.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/rest/FeedsServicePull.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/soap/SoapFeedsPullWebService.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/PushMessage.java
+/media/sf_Projeto-2/src/sd2223/trab1/clients/soap/SoapFeedsClient.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/java/Feeds.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/rest/GenericExceptionMapper.java
+/media/sf_Projeto-2/src/sd2223/trab1/clients/soap/SoapFeedsPushClient.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/soap/FeedsException.java
+/media/sf_Projeto-2/src/sd2223/trab1/clients/rest/RestFeedsPullClient.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/soap/AbstractSoapServer.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/soap/SoapUsersWebService.java
+/media/sf_Projeto-2/src/sd2223/trab1/clients/soap/SoapUsersClient.java
+/media/sf_Projeto-2/src/utils/Args.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/rest/RestFeedsPullResource.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/java/FeedsPush.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/soap/pull/FeedsService.java
+/media/sf_Projeto-2/src/sd2223/trab1/clients/Clients.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/soap/SoapUsersServer.java
+/media/sf_Projeto-2/src/sd2223/trab1/clients/ClientFactory.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/java/JavaFeedsPush.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/soap/SoapFeedsWebService.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/java/FeedsPull.java
+/media/sf_Projeto-2/src/sd2223/trab1/clients/soap/SoapClient.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/java/Result.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/rest/AbstractRestServer.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/java/JavaFeedsCommon.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/soap/SoapWebService.java
+/media/sf_Projeto-2/src/utils/IP.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/rest/UsersService.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/rest/FeedsService.java
+/media/sf_Projeto-2/src/utils/Sleep.java
+/media/sf_Projeto-2/src/sd2223/trab1/discovery/Discovery.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/rest/CustomLoggingFilter.java
+/media/sf_Projeto-2/src/sd2223/trab1/api/soap/push/FeedsService.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/java/JavaFeedsPushPreconditions.java
+/media/sf_Projeto-2/src/sd2223/trab1/servers/rest/RestResource.java
+/media/sf_Projeto-2/src/sd2223/trab1/clients/rest/RestClient.java
