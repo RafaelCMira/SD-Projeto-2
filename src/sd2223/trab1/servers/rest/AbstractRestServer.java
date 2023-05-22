@@ -10,6 +10,8 @@ import sd2223.trab1.discovery.Discovery;
 import sd2223.trab1.servers.java.AbstractServer;
 import utils.IP;
 
+import javax.net.ssl.SSLContext;
+
 
 public abstract class AbstractRestServer extends AbstractServer {
 	
@@ -21,15 +23,19 @@ public abstract class AbstractRestServer extends AbstractServer {
 
 
 	protected void start() {
-		
-		ResourceConfig config = new ResourceConfig();
-		
-		registerResources( config );
-		
-		JdkHttpServerFactory.createHttpServer( URI.create(serverURI.replace(IP.hostAddress(), INETADDR_ANY)), config);
-		
-		Discovery.getInstance().announce(service, super.serverURI);
-		Log.info(String.format("%s Server ready @ %s\n",  service, serverURI));
+		try{
+			ResourceConfig config = new ResourceConfig();
+
+			registerResources( config );
+
+			JdkHttpServerFactory.createHttpServer( URI.create(serverURI.replace(IP.hostAddress(), INETADDR_ANY)), config, SSLContext.getDefault());
+
+			Discovery.getInstance().announce(service, super.serverURI);
+			Log.info(String.format("%s Server ready @ %s\n",  service, serverURI));
+		} catch (Exception e) {
+
+		}
+
 	}
 	
 	abstract void registerResources( ResourceConfig config );
