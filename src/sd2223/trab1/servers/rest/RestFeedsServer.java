@@ -20,7 +20,8 @@ public class RestFeedsServer extends AbstractRestServer {
 	
 	@Override
 	void registerResources(ResourceConfig config) {
-		config.register( Args.valueOf("-push", true) ? RestFeedsPushResource.class : RestFeedsPullResource.class ); 
+		//config.register( Args.valueOf("-push", true) ? RestFeedsPushResource.class : RestFeedsPullResource.class );
+		config.register(RestFeedsPushResource.class);
 	}
 	
 	public static void main(String[] args) throws Exception {
