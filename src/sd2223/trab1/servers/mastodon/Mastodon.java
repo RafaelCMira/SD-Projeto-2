@@ -1,8 +1,13 @@
 package sd2223.trab1.servers.mastodon;
 
+import sd2223.trab1.api.User;
 import sd2223.trab1.api.java.Feeds;
 import sd2223.trab1.api.Message;
 import sd2223.trab1.api.java.Result;
+import sd2223.trab1.api.java.Users;
+import sd2223.trab1.clients.ClientFactory;
+import sd2223.trab1.discovery.Discovery;
+import sd2223.trab1.servers.Domain;
 import sd2223.trab1.servers.mastodon.msgs.PostStatusArgs;
 import sd2223.trab1.servers.mastodon.msgs.PostStatusResult;
 
@@ -16,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 
 import utils.JSON;
 
+import java.net.URI;
 import java.util.List;
 
 import static sd2223.trab1.api.java.Result.ErrorCode.*;
@@ -42,6 +48,8 @@ public class Mastodon implements Feeds {
     static final String ACCOUNT_UNFOLLOW_PATH = "/api/v1/accounts/%s/unfollow";
 
     private static final int HTTP_OK = 200;
+    private static final int HTTP_NOT_FOUND = 404;
+
 
     protected OAuth20Service service;
     protected OAuth2AccessToken accessToken;
@@ -114,21 +122,91 @@ public class Mastodon implements Feeds {
 
     @Override
     public Result<Void> removeFromPersonalFeed(String user, long mid, String pwd) {
-        return error(NOT_IMPLEMENTED);
+        try {
+            final OAuthRequest request = new OAuthRequest(Verb.DELETE, getEndpoint(STATUSES_PATH + "/" + mid));
+            service.signRequest(accessToken, request);
+
+            Response response = service.execute(request);
+
+            if (response.getCode() == HTTP_OK) {
+                JSON.decode(response.getBody(), PostStatusResult.class);
+                return ok();
+            }
+            if (response.getCode() == HTTP_NOT_FOUND) {
+                return error(Result.ErrorCode.NOT_FOUND);
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+        return error(Result.ErrorCode.INTERNAL_ERROR);
     }
 
     @Override
     public Result<Message> getMessage(String user, long mid) {
-        return error(NOT_IMPLEMENTED);
+        try {
+            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(STATUSES_PATH + "/" + mid));
+            service.signRequest(accessToken, request);
+
+            Response response = service.execute(request);
+
+            if (response.getCode() == HTTP_OK) {
+                var res = JSON.decode(response.getBody(), PostStatusResult.class);
+                return ok(res.toMessage());
+            }
+            if (response.getCode() == HTTP_NOT_FOUND) {
+                return error(Result.ErrorCode.NOT_FOUND);
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+        return error(Result.ErrorCode.INTERNAL_ERROR);
     }
 
     @Override
     public Result<Void> subUser(String user, String userSub, String pwd) {
-        return error(NOT_IMPLEMENTED);
+        try {
+            /*
+            Result<User> result = verifyId(user, pwd);
+            if (!result.isOK()) return error(result.error());
+
+            long id = getId(userSub);
+            if (id == -1) return error(Result.ErrorCode.NOT_FOUND);
+            */
+            final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(ACCOUNT_FOLLOW_PATH, getId(userSub)));
+            service.signRequest(accessToken, request);
+
+            Response response = service.execute(request);
+            if (response.getCode() == HTTP_OK) {
+                return ok();
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+        return error(Result.ErrorCode.INTERNAL_ERROR);
     }
+
 
     @Override
     public Result<Void> unsubscribeUser(String user, String userSub, String pwd) {
+        try {
+            /*
+            Result<User> result = verifyId(user, pwd);
+            if (!result.isOK()) return error(result.error());
+
+            long id = getId(userSub);
+            if (id == -1) return error(Result.ErrorCode.NOT_FOUND);
+            */
+            final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(ACCOUNT_UNFOLLOW_PATH, getId(userSub)));
+            service.signRequest(accessToken, request);
+
+            Response response = service.execute(request);
+            if (response.getCode() == HTTP_OK) {
+                return ok();
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+
         return error(NOT_IMPLEMENTED);
     }
 
@@ -141,4 +219,32 @@ public class Mastodon implements Feeds {
     public Result<Void> deleteUserFeed(String user) {
         return error(NOT_IMPLEMENTED);
     }
+
+
+    private long getId(String name) {
+        try {
+            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(SEARCH_ACCOUNTS_PATH + "?/" + name));
+            service.signRequest(accessToken, request);
+
+            Response response = service.execute(request);
+            if (response.getCode() == HTTP_OK) {
+                List<PostStatusResult> res = JSON.decode(response.getBody(), new TypeToken<List<PostStatusResult>>() {
+                });
+                return res.get(0).getId();
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+        return -1;
+    }
+
+    /*
+    private Result<User> verifyId(String user, String pwd) {
+        ClientFactory clientFactory = new ClientFactory();
+        URI[] uri = Discovery.getInstance().knownUrisOf(Domain.get(), 1);
+        // quero ir buscar um servidor para o dominio
+
+        return null; // TODO
+    }*/
+
 }

@@ -8,7 +8,7 @@ import sd2223.trab1.servers.rest.RestResource;
 
 import java.util.List;
 
-public class ProxyFeedsResource extends RestResource implements FeedsService {
+public class ProxyFeedsResource<T extends Feeds> extends RestResource implements FeedsService {
     final Feeds impl;
 
     public ProxyFeedsResource() {

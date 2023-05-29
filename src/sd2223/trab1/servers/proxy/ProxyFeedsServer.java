@@ -11,7 +11,7 @@ import utils.Args;
 import java.util.logging.Logger;
 
 public class ProxyFeedsServer extends AbstractRestServer {
-    public static final int PORT = 4567;
+    public static final int PORT = 4568;
 
     private static Logger Log = Logger.getLogger(RestFeedsServer.class.getName());
 

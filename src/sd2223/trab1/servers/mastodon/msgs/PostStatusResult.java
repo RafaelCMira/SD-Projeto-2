@@ -1,6 +1,8 @@
 package sd2223.trab1.servers.mastodon.msgs;
 
 import sd2223.trab1.api.Message;
+import sd2223.trab1.servers.Domain;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,10 +18,7 @@ public record PostStatusResult(String id, String content, String created_at, Mas
             Date date = dateFormat.parse(created_at);
             return date.getTime();
         } catch (ParseException e) {
-
         }
-
-        // usar classe Jsoup, para transformar content (html) em string
         return 0;
     }
 
@@ -27,8 +26,8 @@ public record PostStatusResult(String id, String content, String created_at, Mas
         return content;
     }
 
-    public Message toMessage() { // Domain.getDomain() usar classe trabalho2
-        var m = new Message(getId(), account.username(), "", getText());
+    public Message toMessage() {
+        var m = new Message(getId(), account.username(), Domain.get(), getText());
         m.setCreationTime(getCreationTime());
         return m;
     }
