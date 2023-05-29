@@ -1,5 +1,6 @@
 sd2223\trab1\api\java\Result$ErrorCode.class
 sd2223\trab1\api\User.class
+sd2223\trab1\servers\Mastodon\MastodonApi.class
 sd2223\trab1\servers\rest\RestFeedsPushResource.class
 sd2223\trab1\clients\soap\SoapUsersClient.class
 sd2223\trab1\servers\rest\GenericExceptionMapper.class
@@ -9,6 +10,7 @@ sd2223\trab1\servers\java\JavaFeedsPushPreconditions.class
 sd2223\trab1\servers\soap\SoapFeedsPullWebService.class
 sd2223\trab1\api\java\Feeds.class
 sd2223\trab1\servers\java\JavaFeedsPreconditions.class
+sd2223\trab1\servers\Mastodon\msgs\PostStatusArgs.class
 sd2223\trab1\clients\rest\RestFeedsPullClient$1.class
 sd2223\trab1\servers\rest\AbstractRestServer.class
 sd2223\trab1\clients\soap\SoapClient$VoidSupplier.class
@@ -19,6 +21,7 @@ sd2223\trab1\servers\soap\AbstractSoapServer.class
 sd2223\trab1\clients\soap\SoapFeedsPullClient.class
 sd2223\trab1\servers\rest\RestUsersResource.class
 sd2223\trab1\api\java\Users.class
+sd2223\trab1\servers\Proxy\ProxyFeedsResource.class
 sd2223\trab1\api\soap\pull\FeedsService.class
 sd2223\trab1\servers\rest\RestResource.class
 sd2223\trab1\clients\soap\SoapClient.class
@@ -32,7 +35,9 @@ sd2223\trab1\clients\ClientFactory$1.class
 sd2223\trab1\api\java\FeedsPush.class
 sd2223\trab1\servers\java\JavaFeedsPull$1.class
 sd2223\trab1\servers\java\JavaFeedsPullPreconditions.class
+sd2223\trab1\servers\Mastodon\msgs\MastodonAccount.class
 sd2223\trab1\api\java\FeedsPull.class
+sd2223\trab1\servers\Proxy\ProxyFeedsServer.class
 sd2223\trab1\clients\rest\RestFeedsPullClient.class
 sd2223\trab1\servers\soap\SoapFeedsWebService.class
 sd2223\trab1\servers\rest\RestFeedsResource.class
@@ -46,11 +51,15 @@ sd2223\trab1\servers\rest\CustomLoggingFilter.class
 sd2223\trab1\api\rest\FeedsService.class
 sd2223\trab1\clients\rest\RestClient.class
 sd2223\trab1\clients\soap\SoapClient$ResultSupplier.class
+sd2223\trab1\servers\Mastodon\MastodonApi$InstanceHolder.class
+sd2223\trab1\servers\Mastodon\msgs\PostStatusResult.class
 utils\Args.class
 utils\IP.class
+sd2223\trab1\servers\Mastodon\Mastodon.class
 sd2223\trab1\servers\soap\SoapFeedsServer.class
 sd2223\trab1\clients\Clients.class
 sd2223\trab1\servers\java\JavaFeedsCommon.class
+sd2223\trab1\servers\Mastodon\Mastodon$1.class
 sd2223\trab1\api\PushMessage.class
 sd2223\trab1\clients\rest\RestFeedsClient$1.class
 sd2223\trab1\api\Message.class
@@ -69,6 +78,7 @@ sd2223\trab1\clients\rest\RestClient$1.class
 sd2223\trab1\servers\soap\SoapUsersWebService.class
 sd2223\trab1\servers\java\JavaUsers.class
 sd2223\trab1\servers\java\JavaFeedsCommon$FeedInfo.class
+utils\JSON.class
 sd2223\trab1\api\soap\FeedsService.class
 sd2223\trab1\servers\java\JavaFeedsCommon$FeedUser.class
 sd2223\trab1\discovery\Discovery.class
