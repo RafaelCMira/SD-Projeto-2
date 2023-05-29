@@ -79,6 +79,7 @@ public class Mastodon implements Feeds {
 
     @Override
     public Result<Long> postMessage(String user, String pwd, Message msg) {
+        System.out.println("sdfsdfsdfsd");
         try {
             final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(STATUSES_PATH));
 
@@ -103,7 +104,6 @@ public class Mastodon implements Feeds {
     public Result<List<Message>> getMessages(String user, long time) {
         try {
             final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(TIMELINES_PATH));
-
             service.signRequest(accessToken, request);
 
             Response response = service.execute(request);
@@ -168,10 +168,10 @@ public class Mastodon implements Feeds {
             /*
             Result<User> result = verifyId(user, pwd);
             if (!result.isOK()) return error(result.error());
-
+            */
             long id = getId(userSub);
             if (id == -1) return error(Result.ErrorCode.NOT_FOUND);
-            */
+
             final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(ACCOUNT_FOLLOW_PATH, getId(userSub)));
             service.signRequest(accessToken, request);
 
@@ -192,11 +192,12 @@ public class Mastodon implements Feeds {
             /*
             Result<User> result = verifyId(user, pwd);
             if (!result.isOK()) return error(result.error());
+            */
 
             long id = getId(userSub);
             if (id == -1) return error(Result.ErrorCode.NOT_FOUND);
-            */
-            final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(ACCOUNT_UNFOLLOW_PATH, getId(userSub)));
+
+            final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(ACCOUNT_UNFOLLOW_PATH, id));
             service.signRequest(accessToken, request);
 
             Response response = service.execute(request);
@@ -223,7 +224,8 @@ public class Mastodon implements Feeds {
 
     private long getId(String name) {
         try {
-            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(SEARCH_ACCOUNTS_PATH + "?/" + name));
+            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(SEARCH_ACCOUNTS_PATH));
+            request.addQuerystringParameter("q", name);
             service.signRequest(accessToken, request);
 
             Response response = service.execute(request);
@@ -238,12 +240,15 @@ public class Mastodon implements Feeds {
         return -1;
     }
 
+
     /*
-    private Result<User> verifyId(String user, String pwd) {
-        ClientFactory clientFactory = new ClientFactory();
+    private Result<User> verifyPassword(String user, String pwd) {
+        Discovery discovery = Discovery.getInstance();
         URI[] uri = Discovery.getInstance().knownUrisOf(Domain.get(), 1);
         // quero ir buscar um servidor para o dominio
 
+        Users usersServer = UsersClientFactory.get(userDomain);
+        var res = usersServer.verifyPassword(userName, pwd);
         return null; // TODO
     }*/
 
