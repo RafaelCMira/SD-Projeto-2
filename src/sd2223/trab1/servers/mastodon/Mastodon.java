@@ -1,8 +1,10 @@
 package sd2223.trab1.servers.mastodon;
 
+import sd2223.trab1.api.PushMessage;
 import sd2223.trab1.api.User;
 import sd2223.trab1.api.java.Feeds;
 import sd2223.trab1.api.Message;
+import sd2223.trab1.api.java.FeedsPush;
 import sd2223.trab1.api.java.Result;
 
 import sd2223.trab1.api.java.Users;
@@ -30,7 +32,7 @@ import static sd2223.trab1.api.java.Result.ErrorCode.*;
 import static sd2223.trab1.api.java.Result.error;
 import static sd2223.trab1.api.java.Result.ok;
 
-public class Mastodon implements Feeds {
+public class Mastodon implements Feeds, FeedsPush {
 
     static String MASTODON_NOVA_SERVER_URI = "http://10.170.138.52:3000";
     static String MASTODON_SOCIAL_SERVER_URI = "https://mastodon.social";
@@ -256,4 +258,13 @@ public class Mastodon implements Feeds {
         return Clients.UsersClients.get(Domain.get()).getUser(user, pwd);
     }
 
+    @Override
+    public Result<Void> push_updateFollowers(String user, String follower, boolean following) {
+        return null;
+    }
+
+    @Override
+    public Result<Void> push_PushMessage(PushMessage msg) {
+        return null;
+    }
 }

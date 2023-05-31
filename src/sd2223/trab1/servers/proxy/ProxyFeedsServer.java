@@ -4,8 +4,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 import sd2223.trab1.api.java.Feeds;
 import sd2223.trab1.servers.Domain;
 import sd2223.trab1.servers.rest.AbstractRestServer;
-import sd2223.trab1.servers.rest.RestFeedsPushResource;
-import sd2223.trab1.servers.rest.RestFeedsServer;
 import utils.Args;
 
 import java.util.logging.Logger;

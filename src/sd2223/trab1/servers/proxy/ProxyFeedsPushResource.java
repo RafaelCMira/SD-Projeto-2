@@ -10,7 +10,7 @@ import sd2223.trab1.servers.mastodon.Mastodon;
 public class ProxyFeedsPushResource extends ProxyFeedsResource<FeedsPush> implements FeedsServicePush {
 
     public ProxyFeedsPushResource() {
-        super((FeedsPush) Mastodon.getInstance());
+        super(Mastodon.getInstance());
     }
 
     @Override

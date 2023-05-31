@@ -19,6 +19,7 @@ sd2223\trab1\servers\rest\RestResource.class
 sd2223\trab1\clients\soap\SoapClient.class
 sd2223\trab1\servers\java\JavaFeedsPush.class
 sd2223\trab1\servers\soap\SoapUsersServer.class
+sd2223\trab1\servers\proxy\ProxyFeedsPushResource.class
 sd2223\trab1\servers\rest\RestFeedsServer.class
 sd2223\trab1\discovery\DiscoveryImpl.class
 sd2223\trab1\api\soap\UsersService.class
