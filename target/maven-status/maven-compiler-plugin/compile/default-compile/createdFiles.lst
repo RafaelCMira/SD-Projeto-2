@@ -8,16 +8,13 @@ sd2223\trab1\api\java\OkResult.class
 sd2223\trab1\servers\java\JavaFeedsPushPreconditions.class
 sd2223\trab1\api\java\Feeds.class
 sd2223\trab1\servers\java\JavaFeedsPreconditions.class
-sd2223\trab1\clients\rest\RestFeedsPullClient$1.class
 sd2223\trab1\servers\rest\AbstractRestServer.class
 sd2223\trab1\clients\soap\SoapClient$VoidSupplier.class
 sd2223\trab1\clients\rest\RestFeedsClient.class
 sd2223\trab1\servers\rest\RestUsersServer.class
 sd2223\trab1\servers\soap\AbstractSoapServer.class
-sd2223\trab1\clients\soap\SoapFeedsPullClient.class
 sd2223\trab1\servers\rest\RestUsersResource.class
 sd2223\trab1\api\java\Users.class
-sd2223\trab1\api\soap\pull\FeedsService.class
 sd2223\trab1\servers\rest\RestResource.class
 sd2223\trab1\clients\soap\SoapClient.class
 sd2223\trab1\servers\java\JavaFeedsPush.class
@@ -28,9 +25,7 @@ sd2223\trab1\api\soap\UsersService.class
 sd2223\trab1\clients\ClientFactory$1.class
 sd2223\trab1\api\java\FeedsPush.class
 sd2223\trab1\servers\mastodon\MastodonApi$InstanceHolder.class
-sd2223\trab1\api\java\FeedsPull.class
 sd2223\trab1\servers\proxy\ProxyFeedsServer.class
-sd2223\trab1\clients\rest\RestFeedsPullClient.class
 sd2223\trab1\servers\soap\SoapFeedsWebService.class
 sd2223\trab1\servers\rest\RestFeedsResource.class
 sd2223\trab1\api\soap\UsersException.class
@@ -63,7 +58,6 @@ sd2223\trab1\api\soap\push\FeedsService.class
 sd2223\trab1\api\rest\FeedsServicePush.class
 sd2223\trab1\clients\ClientFactory.class
 sd2223\trab1\clients\soap\SoapFeedsClient.class
-sd2223\trab1\api\rest\FeedsServicePull.class
 sd2223\trab1\servers\java\AbstractServer.class
 sd2223\trab1\api\java\ErrorResult.class
 sd2223\trab1\servers\rest\RestResource$1.class
