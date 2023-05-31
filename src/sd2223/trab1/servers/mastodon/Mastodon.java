@@ -2,15 +2,11 @@ package sd2223.trab1.servers.mastodon;
 
 import sd2223.trab1.api.PushMessage;
 import sd2223.trab1.api.User;
-import sd2223.trab1.api.java.Feeds;
 import sd2223.trab1.api.Message;
 import sd2223.trab1.api.java.FeedsPush;
 import sd2223.trab1.api.java.Result;
 
-import sd2223.trab1.api.java.Users;
-import sd2223.trab1.clients.ClientFactory;
 import sd2223.trab1.clients.Clients;
-import sd2223.trab1.discovery.Discovery;
 import sd2223.trab1.servers.Domain;
 import sd2223.trab1.servers.mastodon.msgs.PostStatusArgs;
 import sd2223.trab1.servers.mastodon.msgs.PostStatusResult;
@@ -25,7 +21,6 @@ import com.google.gson.reflect.TypeToken;
 
 import utils.JSON;
 
-import java.net.URI;
 import java.util.List;
 
 import static sd2223.trab1.api.java.Result.ErrorCode.*;
@@ -112,7 +107,7 @@ public class Mastodon implements FeedsPush {
             if (response.getCode() == HTTP_OK) {
                 List<PostStatusResult> res = JSON.decode(response.getBody(), new TypeToken<List<PostStatusResult>>() {
                 });
-                return ok(res.stream().map(PostStatusResult::toMessages).filter(m -> m.getCreationTime() > time).toList());
+                return ok(res.stream().map(PostStatusResult::toMessage).filter(m -> m.getCreationTime() > time).toList());
             }
         } catch (Exception x) {
             x.printStackTrace();
