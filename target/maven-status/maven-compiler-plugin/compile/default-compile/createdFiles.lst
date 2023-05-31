@@ -41,7 +41,6 @@ sd2223\trab1\api\rest\UsersService.class
 sd2223\trab1\clients\soap\SoapFeedsPushClient.class
 sd2223\trab1\servers\rest\CustomLoggingFilter.class
 sd2223\trab1\api\rest\FeedsService.class
-sd2223\trab1\servers\mastodon\Mastodon$2.class
 sd2223\trab1\clients\rest\RestClient.class
 sd2223\trab1\clients\soap\SoapClient$ResultSupplier.class
 utils\Args.class

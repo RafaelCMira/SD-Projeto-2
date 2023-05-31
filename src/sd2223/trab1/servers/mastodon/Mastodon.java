@@ -4,8 +4,10 @@ import sd2223.trab1.api.User;
 import sd2223.trab1.api.java.Feeds;
 import sd2223.trab1.api.Message;
 import sd2223.trab1.api.java.Result;
+
 import sd2223.trab1.api.java.Users;
 import sd2223.trab1.clients.ClientFactory;
+import sd2223.trab1.clients.Clients;
 import sd2223.trab1.discovery.Discovery;
 import sd2223.trab1.servers.Domain;
 import sd2223.trab1.servers.mastodon.msgs.PostStatusArgs;
@@ -81,7 +83,6 @@ public class Mastodon implements Feeds {
     public Result<Long> postMessage(String user, String pwd, Message msg) {
         try {
             final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(STATUSES_PATH));
-
             JSON.toMap(new PostStatusArgs(msg.getText())).forEach((k, v) -> {
                 request.addBodyParameter(k, v.toString());
             });
@@ -103,16 +104,13 @@ public class Mastodon implements Feeds {
     public Result<List<Message>> getMessages(String user, long time) {
         try {
             final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(TIMELINES_PATH));
-
             service.signRequest(accessToken, request);
 
             Response response = service.execute(request);
-
             if (response.getCode() == HTTP_OK) {
                 List<PostStatusResult> res = JSON.decode(response.getBody(), new TypeToken<List<PostStatusResult>>() {
                 });
-
-                return ok(res.stream().map(PostStatusResult::toMessage).toList());
+                return ok(res.stream().map(PostStatusResult::toMessage).filter(m -> m.getCreationTime() > time).toList());
             }
         } catch (Exception x) {
             x.printStackTrace();
@@ -165,14 +163,13 @@ public class Mastodon implements Feeds {
     @Override
     public Result<Void> subUser(String user, String userSub, String pwd) {
         try {
-            /*
             Result<User> result = verifyId(user, pwd);
             if (!result.isOK()) return error(result.error());
 
             long id = getId(userSub);
             if (id == -1) return error(Result.ErrorCode.NOT_FOUND);
-            */
-            final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(ACCOUNT_FOLLOW_PATH, getId(userSub)));
+
+            final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(ACCOUNT_FOLLOW_PATH, id));
             service.signRequest(accessToken, request);
 
             Response response = service.execute(request);
@@ -189,14 +186,13 @@ public class Mastodon implements Feeds {
     @Override
     public Result<Void> unsubscribeUser(String user, String userSub, String pwd) {
         try {
-            /*
             Result<User> result = verifyId(user, pwd);
             if (!result.isOK()) return error(result.error());
 
             long id = getId(userSub);
             if (id == -1) return error(Result.ErrorCode.NOT_FOUND);
-            */
-            final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(ACCOUNT_UNFOLLOW_PATH, getId(userSub)));
+
+            final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(ACCOUNT_UNFOLLOW_PATH, id));
             service.signRequest(accessToken, request);
 
             Response response = service.execute(request);
@@ -206,12 +202,28 @@ public class Mastodon implements Feeds {
         } catch (Exception x) {
             x.printStackTrace();
         }
-
         return error(NOT_IMPLEMENTED);
     }
 
     @Override
     public Result<List<String>> listSubs(String user) {
+        try {
+            long id = getId(user);
+            if (id == -1) return error(Result.ErrorCode.NOT_FOUND);
+
+            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(ACCOUNT_FOLLOWING_PATH, id));
+            service.signRequest(accessToken, request);
+
+            Response response = service.execute(request);
+            if (response.getCode() == HTTP_OK) {
+                List<String> res = JSON.decode(response.getBody(), new TypeToken<List<String>>() {
+                });
+                return ok(res.stream().toList());
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+
         return error(NOT_IMPLEMENTED);
     }
 
@@ -223,7 +235,7 @@ public class Mastodon implements Feeds {
 
     private long getId(String name) {
         try {
-            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(SEARCH_ACCOUNTS_PATH + "?/" + name));
+            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(SEARCH_ACCOUNTS_PATH + "?q=" + name));
             service.signRequest(accessToken, request);
 
             Response response = service.execute(request);
@@ -238,13 +250,9 @@ public class Mastodon implements Feeds {
         return -1;
     }
 
-    /*
-    private Result<User> verifyId(String user, String pwd) {
-        ClientFactory clientFactory = new ClientFactory();
-        URI[] uri = Discovery.getInstance().knownUrisOf(Domain.get(), 1);
-        // quero ir buscar um servidor para o dominio
 
-        return null; // TODO
-    }*/
+    private Result<User> verifyId(String user, String pwd) {
+        return Clients.UsersClients.get(Domain.get()).getUser(user, pwd);
+    }
 
 }

@@ -20,8 +20,7 @@ public abstract class AbstractRestServer extends AbstractServer {
     protected AbstractRestServer(Logger log, String service, int port) {
         super(log, service, String.format(SERVER_BASE_URI, IP.hostName(), port, REST_CTX));
     }
-
-
+    
     protected void start() {
         try {
             ResourceConfig config = new ResourceConfig();

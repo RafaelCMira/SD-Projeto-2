@@ -1,5 +1,6 @@
 package sd2223.trab1.servers.proxy;
 
+import jakarta.inject.Singleton;
 import sd2223.trab1.api.Message;
 import sd2223.trab1.api.java.Feeds;
 import sd2223.trab1.api.rest.FeedsService;
@@ -8,6 +9,7 @@ import sd2223.trab1.servers.rest.RestResource;
 
 import java.util.List;
 
+@Singleton
 public class ProxyFeedsResource<T extends Feeds> extends RestResource implements FeedsService {
     final Feeds impl;
 
