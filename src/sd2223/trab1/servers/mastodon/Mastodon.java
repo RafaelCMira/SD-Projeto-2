@@ -32,7 +32,7 @@ import static sd2223.trab1.api.java.Result.ErrorCode.*;
 import static sd2223.trab1.api.java.Result.error;
 import static sd2223.trab1.api.java.Result.ok;
 
-public class Mastodon implements Feeds, FeedsPush {
+public class Mastodon implements FeedsPush {
 
     static String MASTODON_NOVA_SERVER_URI = "http://10.170.138.52:3000";
     static String MASTODON_SOCIAL_SERVER_URI = "https://mastodon.social";

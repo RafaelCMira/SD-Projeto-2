@@ -54,7 +54,5 @@ public class ProxyFeedsResource<T extends Feeds> extends RestResource implements
     public void deleteUserFeed(String user) {
         super.fromJavaResult(impl.deleteUserFeed(user));
     }
-
-    // rest feeds resrouce (mesma coisa)
-
+    
 }
