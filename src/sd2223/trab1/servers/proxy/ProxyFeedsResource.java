@@ -1,21 +1,19 @@
 package sd2223.trab1.servers.proxy;
 
-import jakarta.inject.Singleton;
 import sd2223.trab1.api.Message;
 import sd2223.trab1.api.java.Feeds;
 import sd2223.trab1.api.rest.FeedsService;
-import sd2223.trab1.servers.mastodon.Mastodon;
 import sd2223.trab1.servers.rest.RestResource;
 
 import java.util.List;
 
-@Singleton
 public class ProxyFeedsResource<T extends Feeds> extends RestResource implements FeedsService {
-    final Feeds impl;
 
-    public ProxyFeedsResource() {
-        this.impl = Mastodon.getInstance();
+    public ProxyFeedsResource(T impl) {
+        this.impl = impl;
     }
+
+    final protected T impl;
 
     @Override
     public long postMessage(String user, String pwd, Message msg) {

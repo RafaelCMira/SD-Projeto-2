@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class ProxyFeedsServer extends AbstractRestServer {
     public static final int PORT = 4568;
 
-    private static Logger Log = Logger.getLogger(RestFeedsServer.class.getName());
+    private static Logger Log = Logger.getLogger(ProxyFeedsServer.class.getName());
 
     ProxyFeedsServer() {
         super(Log, Feeds.SERVICENAME, PORT);
@@ -21,7 +21,7 @@ public class ProxyFeedsServer extends AbstractRestServer {
 
     @Override
     protected void registerResources(ResourceConfig config) {
-        config.register(RestFeedsPushResource.class);
+        config.register(ProxyFeedsPushResource.class);
     }
 
     public static void main(String[] args) throws Exception {
@@ -30,17 +30,4 @@ public class ProxyFeedsServer extends AbstractRestServer {
         new ProxyFeedsServer().start();
     }
 
-    // rest feeds server mas está a usar o proxy feeds resource
-
-    /**
-     *
-     * Kafka
-     *
-     * Replication Feeds resource (nova classe) //usar portas diferentes
-     *
-     * //inicializar o kafka
-     *
-     * Replication Feeds Server (nova classe)
-     *
-     */
 }
