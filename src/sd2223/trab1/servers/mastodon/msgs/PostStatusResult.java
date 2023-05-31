@@ -31,4 +31,16 @@ public record PostStatusResult(String id, String content, String created_at, Mas
         m.setCreationTime(getCreationTime());
         return m;
     }
+
+    public String getText_messages() {
+        var res = content().split("<p>");
+        return res[1];
+    }
+
+
+    public Message toMessages() {
+        var m = new Message(getId(), account.username(), Domain.get(), getText_messages());
+        m.setCreationTime(getCreationTime());
+        return m;
+    }
 }

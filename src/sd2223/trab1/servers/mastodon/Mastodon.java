@@ -112,7 +112,7 @@ public class Mastodon implements FeedsPush {
             if (response.getCode() == HTTP_OK) {
                 List<PostStatusResult> res = JSON.decode(response.getBody(), new TypeToken<List<PostStatusResult>>() {
                 });
-                return ok(res.stream().map(PostStatusResult::toMessage).filter(m -> m.getCreationTime() > time).toList());
+                return ok(res.stream().map(PostStatusResult::toMessages).filter(m -> m.getCreationTime() > time).toList());
             }
         } catch (Exception x) {
             x.printStackTrace();
