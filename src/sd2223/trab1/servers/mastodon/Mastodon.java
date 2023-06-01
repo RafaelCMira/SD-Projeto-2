@@ -6,8 +6,6 @@ import sd2223.trab1.api.Message;
 import sd2223.trab1.api.java.FeedsPush;
 import sd2223.trab1.api.java.Result;
 
-import sd2223.trab1.clients.Clients;
-import sd2223.trab1.servers.Domain;
 import sd2223.trab1.servers.mastodon.msgs.PostStatusArgs;
 import sd2223.trab1.servers.mastodon.msgs.PostStatusResult;
 
@@ -79,6 +77,9 @@ public class Mastodon implements FeedsPush {
     @Override
     public Result<Long> postMessage(String user, String pwd, Message msg) {
         try {
+            Result<User> result = verifyId(user, pwd);
+            if (!result.isOK()) return error(result.error());
+
             final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(STATUSES_PATH));
             JSON.toMap(new PostStatusArgs(msg.getText())).forEach((k, v) -> {
                 request.addBodyParameter(k, v.toString());
@@ -139,6 +140,9 @@ public class Mastodon implements FeedsPush {
     @Override
     public Result<Void> removeFromPersonalFeed(String user, long mid, String pwd) {
         try {
+            Result<User> result = verifyId(user, pwd);
+            if (!result.isOK()) return error(result.error());
+
             final OAuthRequest request = new OAuthRequest(Verb.DELETE, getEndpoint(STATUSES_PATH + "/" + mid));
             service.signRequest(accessToken, request);
 
@@ -165,7 +169,7 @@ public class Mastodon implements FeedsPush {
             if (!result.isOK()) return error(result.error());
 
             long id = getId(userSub);
-            if (id == -1) return error(Result.ErrorCode.NOT_FOUND);
+            if (id == -1) return error(NOT_FOUND);
 
             final OAuthRequest request = new OAuthRequest(Verb.POST, getEndpoint(ACCOUNT_FOLLOW_PATH, id));
             service.signRequest(accessToken, request);
@@ -177,7 +181,7 @@ public class Mastodon implements FeedsPush {
         } catch (Exception x) {
             x.printStackTrace();
         }
-        return error(Result.ErrorCode.INTERNAL_ERROR);
+        return error(INTERNAL_ERROR);
     }
 
 
@@ -200,7 +204,7 @@ public class Mastodon implements FeedsPush {
         } catch (Exception x) {
             x.printStackTrace();
         }
-        return error(NOT_IMPLEMENTED);
+        return error(INTERNAL_ERROR);
     }
 
     @Override
@@ -230,24 +234,37 @@ public class Mastodon implements FeedsPush {
         return error(NOT_IMPLEMENTED);
     }
 
-    private Result<User> verifyId(String user, String pwd) {
-        return Clients.UsersClients.get(Domain.get()).getUser(user, pwd);
-    }
-
     @Override
     public Result<Void> push_updateFollowers(String user, String follower, boolean following) {
-        return null;
+        return error(NOT_IMPLEMENTED);
     }
 
     @Override
     public Result<Void> push_PushMessage(PushMessage msg) {
-        return null;
+        return error(NOT_IMPLEMENTED);
     }
 
-    private long getId(String name) {
+    private Result<User> verifyId(String user, String pwd) {
         try {
-            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(SEARCH_ACCOUNTS_PATH + "?q=" + name));
-            // request.addQuerystringParameter("q", name);
+            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(VERIFY_CREDENTIALS_PATH));
+            request.addQuerystringParameter("user", user);
+            request.addQuerystringParameter("pwd", pwd);
+            service.signRequest(accessToken, request);
+
+            Response response = service.execute(request);
+            if (response.getCode() == HTTP_OK) {
+               return ok();
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+        return error(INTERNAL_ERROR);
+    }
+
+    private long getId(String user) {
+        try {
+            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(SEARCH_ACCOUNTS_PATH));
+            request.addQuerystringParameter("q", user);
             service.signRequest(accessToken, request);
 
             Response response = service.execute(request);
