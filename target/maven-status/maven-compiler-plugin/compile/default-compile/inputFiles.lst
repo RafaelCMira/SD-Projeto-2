@@ -5,6 +5,7 @@ C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\rest\RestUsersResource.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\clients\rest\RestUsersClient.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\java\AbstractServer.java
+C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\kafka\KafkaOperation.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\mastodon\MastodonApi.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\java\JavaUsers.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\rest\RestFeedsServer.java
@@ -16,7 +17,6 @@ C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\rest\RestResource.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\utils\Sleep.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\api\User.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\kafka\examples\KafkaSender.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\java\JavaFeedsPush.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\clients\rest\RestFeedsPushClient.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\api\soap\FeedsService.java
@@ -45,14 +45,13 @@ C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\clients\ClientFactory.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\api\java\Result.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\api\rest\UsersService.java
+C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\kafka\TotalOrderExecutor.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\mastodon\msgs\PostStatusArgs.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\clients\rest\RestClient.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\api\java\Feeds.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\kafka\examples\KafkaReceiver.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\api\soap\UsersService.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\soap\SoapFeedsWebService.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\replication\ReplicationFeedsServer.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\kafka\examples\TotalOrderExecutor.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\utils\JSON.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\clients\soap\SoapUsersClient.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\Domain.java

@@ -128,5 +128,5 @@ public interface FeedsService {
 
     @DELETE
     @Path("/personal/{" + USER + "}")
-    void deleteUserFeed(@PathParam(USER) String user);
+    void deleteUserFeed(@HeaderParam(HEADER_VERSION) Long version, @PathParam(USER) String user);
 }

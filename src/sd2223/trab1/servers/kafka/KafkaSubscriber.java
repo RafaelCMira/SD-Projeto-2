@@ -4,9 +4,9 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
-import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.StringDeserializer;
 
 public class KafkaSubscriber {
     static public KafkaSubscriber createSubscriber(String brokers, List<String> topics, String mode) {

@@ -52,7 +52,7 @@ public class ProxyFeedsResource<T extends Feeds> extends RestResource implements
     }
 
     @Override
-    public void deleteUserFeed(String user) {
+    public void deleteUserFeed(Long version, String user) {
         super.fromJavaResult(impl.deleteUserFeed(user));
     }
 

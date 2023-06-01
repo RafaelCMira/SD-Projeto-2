@@ -21,7 +21,7 @@ public class ReplicationFeedsServer extends AbstractRestServer {
 
     @Override
     protected void registerResources(ResourceConfig config) {
-        config.register(ReplicationFeedsPushResource.class);
+        config.register(new ReplicationFeedsPushResource());
     }
 
     public static void main(String[] args) throws Exception {

@@ -2,14 +2,13 @@ package sd2223.trab1.servers.kafka;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
-import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 public class KafkaPublisher {
 
@@ -38,11 +37,9 @@ public class KafkaPublisher {
         this.producer.close();
     }
 
-    public long publish(String topic, String key, KafkaMsg value) {
+    public long publish(String topic, String key, KafkaOperation value) {
         try {
-            // Aqui tenho de serializar para os bytes o valor do value em arg
             var bytes = serializeObject(value);
-
             long offset = producer.send(new ProducerRecord<>(topic, key, bytes)).get().offset();
             return offset;
         } catch (ExecutionException | InterruptedException x) {
@@ -51,7 +48,7 @@ public class KafkaPublisher {
         return -1;
     }
 
-    private byte[] serializeObject(Serializable object) {
+    private byte[] serializeObject(KafkaOperation object) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
