@@ -98,6 +98,27 @@ public class Mastodon implements FeedsPush {
     }
 
     @Override
+    public Result<Message> getMessage(String user, long mid) {
+        try {
+            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(STATUSES_PATH + "/" + mid));
+            service.signRequest(accessToken, request);
+
+            Response response = service.execute(request);
+
+            if (response.getCode() == HTTP_OK) {
+                var res = JSON.decode(response.getBody(), PostStatusResult.class);
+                return ok(res.toMessage());
+            }
+            if (response.getCode() == HTTP_NOT_FOUND) {
+                return error(Result.ErrorCode.NOT_FOUND);
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+        return error(Result.ErrorCode.INTERNAL_ERROR);
+    }
+
+    @Override
     public Result<List<Message>> getMessages(String user, long time) {
         try {
             final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(TIMELINES_PATH));
@@ -136,26 +157,6 @@ public class Mastodon implements FeedsPush {
         return error(Result.ErrorCode.INTERNAL_ERROR);
     }
 
-    @Override
-    public Result<Message> getMessage(String user, long mid) {
-        try {
-            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(STATUSES_PATH + "/" + mid));
-            service.signRequest(accessToken, request);
-
-            Response response = service.execute(request);
-
-            if (response.getCode() == HTTP_OK) {
-                var res = JSON.decode(response.getBody(), PostStatusResult.class);
-                return ok(res.toMessage());
-            }
-            if (response.getCode() == HTTP_NOT_FOUND) {
-                return error(Result.ErrorCode.NOT_FOUND);
-            }
-        } catch (Exception x) {
-            x.printStackTrace();
-        }
-        return error(Result.ErrorCode.INTERNAL_ERROR);
-    }
 
     @Override
     public Result<Void> subUser(String user, String userSub, String pwd) {
@@ -229,6 +230,19 @@ public class Mastodon implements FeedsPush {
         return error(NOT_IMPLEMENTED);
     }
 
+    private Result<User> verifyId(String user, String pwd) {
+        return Clients.UsersClients.get(Domain.get()).getUser(user, pwd);
+    }
+
+    @Override
+    public Result<Void> push_updateFollowers(String user, String follower, boolean following) {
+        return null;
+    }
+
+    @Override
+    public Result<Void> push_PushMessage(PushMessage msg) {
+        return null;
+    }
 
     private long getId(String name) {
         try {
@@ -246,20 +260,5 @@ public class Mastodon implements FeedsPush {
             x.printStackTrace();
         }
         return -1;
-    }
-
-
-    private Result<User> verifyId(String user, String pwd) {
-        return Clients.UsersClients.get(Domain.get()).getUser(user, pwd);
-    }
-
-    @Override
-    public Result<Void> push_updateFollowers(String user, String follower, boolean following) {
-        return null;
-    }
-
-    @Override
-    public Result<Void> push_PushMessage(PushMessage msg) {
-        return null;
     }
 }
