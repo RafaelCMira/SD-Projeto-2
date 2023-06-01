@@ -4,9 +4,7 @@ import org.jsoup.Jsoup;
 import sd2223.trab1.api.Message;
 import sd2223.trab1.servers.Domain;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Objects;
 
 public record PostStatusResult(String id, String content, String created_at, MastodonAccount account) {
@@ -15,13 +13,7 @@ public record PostStatusResult(String id, String content, String created_at, Mas
     }
 
     long getCreationTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        try {
-            Date date = dateFormat.parse(created_at);
-            return date.getTime();
-        } catch (ParseException e) {
-        }
-        return 0;
+        return Instant.parse(created_at).toEpochMilli();
     }
 
     public String getText() {

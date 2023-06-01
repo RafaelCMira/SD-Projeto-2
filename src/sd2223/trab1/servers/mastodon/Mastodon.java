@@ -232,8 +232,8 @@ public class Mastodon implements FeedsPush {
 
     private long getId(String name) {
         try {
-            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(SEARCH_ACCOUNTS_PATH));
-            request.addQuerystringParameter("q", name);
+            final OAuthRequest request = new OAuthRequest(Verb.GET, getEndpoint(SEARCH_ACCOUNTS_PATH + "?q=" + name));
+            // request.addQuerystringParameter("q", name);
             service.signRequest(accessToken, request);
 
             Response response = service.execute(request);
