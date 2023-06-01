@@ -16,16 +16,6 @@ public record PostStatusResult(String id, String content, String created_at, Mas
         return Instant.parse(created_at).toEpochMilli();
     }
 
-    public String getText() {
-        return content;
-    }
-
-    public Message toMessageNaoUsado() {
-        var m = new Message(getId(), account.username(), Domain.get(), getText());
-        m.setCreationTime(getCreationTime());
-        return m;
-    }
-
     public Message toMessage() {
         var m = new Message(getId(), account.username(), Domain.get(), Objects.requireNonNull(Jsoup.parse(content).select("p").first()).text());
         m.setCreationTime(getCreationTime());

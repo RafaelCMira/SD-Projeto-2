@@ -6,7 +6,6 @@ import sd2223.trab1.api.java.FeedsPush;
 import sd2223.trab1.api.rest.FeedsServicePush;
 import sd2223.trab1.servers.mastodon.Mastodon;
 
-@Singleton
 public class ProxyFeedsPushResource extends ProxyFeedsResource<FeedsPush> implements FeedsServicePush {
 
     public ProxyFeedsPushResource() {
