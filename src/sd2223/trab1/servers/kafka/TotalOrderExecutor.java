@@ -39,10 +39,11 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
         //   KafkaMsg msg = deserializeObject(r.value(), KafkaMsg.class);
         KafkaMsg msg = deserializeByteArray(r.value());
         switch (msg.getOperation()) {
-            case KafkaMsg.POST_MESSAGE -> {
-                impl.postMessage(msg.getUser(), msg.getPwd(), msg.getMsg());
-                sync.setResult(version, msg);
-            }
+            case KafkaMsg.POST_MESSAGE -> execPostMessage(version, msg);
+            case KafkaMsg.REMOVE_FROM_PERSONAL -> execRemoveFromPersonal(version, msg);
+            case KafkaMsg.SUB -> execSubUser(version, msg);
+            case KafkaMsg.UNSUB -> execUnsubUser(version, msg);
+            case KafkaMsg.DELETE_USER_FEED -> execDeleteUserFeed(version, msg);
         }
     }
 
@@ -75,6 +76,31 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private void execPostMessage(long version, KafkaMsg msg) {
+        impl.postMessage(msg.getUser(), msg.getPwd(), msg.getMsg());
+        sync.setResult(version, msg);
+    }
+
+    private void execRemoveFromPersonal(long version, KafkaMsg msg) {
+        impl.removeFromPersonalFeed(msg.getUser(), msg.getMid(), msg.getPwd());
+        sync.setResult(version, msg);
+    }
+
+    private void execSubUser(long version, KafkaMsg msg) {
+        impl.subUser(msg.getUser(), msg.getUserSub(), msg.getPwd());
+        sync.setResult(version, msg);
+    }
+
+    private void execUnsubUser(long version, KafkaMsg msg) {
+        impl.unsubscribeUser(msg.getUser(), msg.getUserSub(), msg.getPwd());
+        sync.setResult(version, msg);
+    }
+
+    private void execDeleteUserFeed(long version, KafkaMsg msg) {
+        impl.deleteUserFeed(msg.getUser());
+        sync.setResult(version, msg);
     }
 
     /*

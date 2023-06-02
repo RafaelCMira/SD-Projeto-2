@@ -39,7 +39,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
     @Override
     public long postMessage(Long version, String user, String pwd, Message msg) {
-        waitIfNeeded(version);
+        writeWaitIfNeeded(version);
 
         KafkaMsg kafkaMsg = new KafkaMsg(KafkaMsg.POST_MESSAGE, user, pwd, null, msg, -1, -1);
         serverVersion = publisher.publish(topic, Domain.get(), kafkaMsg);
@@ -50,7 +50,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
     @Override
     public void removeFromPersonalFeed(Long version, String user, long mid, String pwd) {
-        waitIfNeeded(version);
+        writeWaitIfNeeded(version);
 
         KafkaMsg op = new KafkaMsg(KafkaMsg.REMOVE_FROM_PERSONAL, user, pwd, null, null, mid, -1);
         serverVersion = publisher.publish(topic, Domain.get(), op);
@@ -59,14 +59,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
     @Override
     public Message getMessage(Long version, String user, long mid) {
-        if (version != null && version > serverVersion) {
-            sync.waitForVersion(version, Integer.MAX_VALUE);
-            serverVersion = version;
-        }
-
-        if (sync.getVersion() < serverVersion) {
-            sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
-        }
+        readWaitIfNeeded(version);
 
         var result = super.fromJavaResult(impl.getMessage(user, mid));
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
@@ -75,14 +68,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
     @Override
     public List<Message> getMessages(Long version, String user, long time) {
-        if (version != null && version > serverVersion) {
-            sync.waitForVersion(version, Integer.MAX_VALUE);
-            serverVersion = version;
-        }
-
-        if (sync.getVersion() < serverVersion) {
-            sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
-        }
+        readWaitIfNeeded(version);
 
         var result = super.fromJavaResult(impl.getMessages(user, time));
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
@@ -91,7 +77,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
     @Override
     public void subUser(Long version, String user, String userSub, String pwd) {
-        waitIfNeeded(version);
+        writeWaitIfNeeded(version);
 
         KafkaMsg op = new KafkaMsg(KafkaMsg.SUB, user, pwd, userSub, null, -1, -1);
         serverVersion = publisher.publish(topic, Domain.get(), op);
@@ -100,7 +86,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
     @Override
     public void unsubscribeUser(Long version, String user, String userSub, String pwd) {
-        waitIfNeeded(version);
+        writeWaitIfNeeded(version);
 
         KafkaMsg op = new KafkaMsg(KafkaMsg.UNSUB, user, pwd, userSub, null, -1, -1);
         serverVersion = publisher.publish(topic, Domain.get(), op);
@@ -109,14 +95,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
     @Override
     public List<String> listSubs(Long version, String user) {
-        if (version != null && version > serverVersion) {
-            sync.waitForVersion(version, Integer.MAX_VALUE);
-            serverVersion = version;
-        }
-
-        if (sync.getVersion() < serverVersion) {
-            sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
-        }
+        readWaitIfNeeded(version);
 
         var result = super.fromJavaResult(impl.listSubs(user));
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
@@ -125,16 +104,28 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
     @Override
     public void deleteUserFeed(Long version, String user) {
-        waitIfNeeded(version);
+        writeWaitIfNeeded(version);
 
         KafkaMsg op = new KafkaMsg(KafkaMsg.DELETE_USER_FEED, user, null, null, null, -1, -1);
         serverVersion = publisher.publish(topic, Domain.get(), op);
         throw new WebApplicationException(Response.status(HTTP_OK_VOID).header(HEADER_VERSION, serverVersion).build());
     }
 
-    protected void waitIfNeeded(Long version) {
+
+    protected void writeWaitIfNeeded(Long version) {
         if (version != null && version > serverVersion) {
             sync.waitForVersion(version, Integer.MAX_VALUE);
+        }
+
+        if (sync.getVersion() < serverVersion) {
+            sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
+        }
+    }
+
+    protected void readWaitIfNeeded(Long version) {
+        if (version != null && version > serverVersion) {
+            sync.waitForVersion(version, Integer.MAX_VALUE);
+            serverVersion = version;
         }
 
         if (sync.getVersion() < serverVersion) {
