@@ -12,12 +12,12 @@ public class ProxyFeedsPushResource extends ProxyFeedsResource<FeedsPush> implem
     }
 
     @Override
-    public void push_PushMessage(PushMessage msg) {
+    public void push_PushMessage(Long version, PushMessage msg) {
         super.fromJavaResult(impl.push_PushMessage(msg));
     }
 
     @Override
-    public void push_updateFollowers(String user, String follower, boolean following) {
+    public void push_updateFollowers(Long version, String user, String follower, boolean following) {
         super.fromJavaResult(impl.push_updateFollowers(user, follower, following));
     }
 }

@@ -44,6 +44,8 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
             case KafkaMsg.SUB -> execSubUser(version, msg);
             case KafkaMsg.UNSUB -> execUnsubUser(version, msg);
             case KafkaMsg.DELETE_USER_FEED -> execDeleteUserFeed(version, msg);
+            case KafkaMsg.PUSH_MESSAGE -> execPushMessage(version, msg);
+            case KafkaMsg.UPDATE_FOLLOWERS -> execUpdateFollowers(version, msg);
         }
     }
 
@@ -100,6 +102,16 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
 
     private void execDeleteUserFeed(long version, KafkaMsg msg) {
         impl.deleteUserFeed(msg.getUser());
+        sync.setResult(version, msg);
+    }
+
+    private void execPushMessage(long version, KafkaMsg msg) {
+        impl.push_PushMessage(msg.getPushMessage());
+        sync.setResult(version, msg);
+    }
+
+    private void execUpdateFollowers(long version, KafkaMsg msg) {
+        impl.push_updateFollowers(msg.getUser(), msg.getFollower(), msg.isFollowing());
         sync.setResult(version, msg);
     }
 

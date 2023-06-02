@@ -41,7 +41,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     public long postMessage(Long version, String user, String pwd, Message msg) {
         writeWaitIfNeeded(version);
 
-        KafkaMsg kafkaMsg = new KafkaMsg(KafkaMsg.POST_MESSAGE, user, pwd, null, msg, -1, -1);
+        KafkaMsg kafkaMsg = new KafkaMsg(KafkaMsg.POST_MESSAGE, user, pwd, null, msg, -1, -1, null, null, false);
         serverVersion = publisher.publish(topic, Domain.get(), kafkaMsg);
         sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
@@ -52,7 +52,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     public void removeFromPersonalFeed(Long version, String user, long mid, String pwd) {
         writeWaitIfNeeded(version);
 
-        KafkaMsg op = new KafkaMsg(KafkaMsg.REMOVE_FROM_PERSONAL, user, pwd, null, null, mid, -1);
+        KafkaMsg op = new KafkaMsg(KafkaMsg.REMOVE_FROM_PERSONAL, user, pwd, null, null, mid, -1, null, null, false);
         serverVersion = publisher.publish(topic, Domain.get(), op);
         throw new WebApplicationException(Response.status(HTTP_OK_VOID).header(HEADER_VERSION, serverVersion).build());
     }
@@ -79,7 +79,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     public void subUser(Long version, String user, String userSub, String pwd) {
         writeWaitIfNeeded(version);
 
-        KafkaMsg op = new KafkaMsg(KafkaMsg.SUB, user, pwd, userSub, null, -1, -1);
+        KafkaMsg op = new KafkaMsg(KafkaMsg.SUB, user, pwd, userSub, null, -1, -1, null, null, false);
         serverVersion = publisher.publish(topic, Domain.get(), op);
         throw new WebApplicationException(Response.status(HTTP_OK_VOID).header(HEADER_VERSION, serverVersion).build());
     }
@@ -88,7 +88,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     public void unsubscribeUser(Long version, String user, String userSub, String pwd) {
         writeWaitIfNeeded(version);
 
-        KafkaMsg op = new KafkaMsg(KafkaMsg.UNSUB, user, pwd, userSub, null, -1, -1);
+        KafkaMsg op = new KafkaMsg(KafkaMsg.UNSUB, user, pwd, userSub, null, -1, -1, null, null, false);
         serverVersion = publisher.publish(topic, Domain.get(), op);
         throw new WebApplicationException(Response.status(HTTP_OK_VOID).header(HEADER_VERSION, serverVersion).build());
     }
@@ -106,7 +106,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     public void deleteUserFeed(Long version, String user) {
         writeWaitIfNeeded(version);
 
-        KafkaMsg op = new KafkaMsg(KafkaMsg.DELETE_USER_FEED, user, null, null, null, -1, -1);
+        KafkaMsg op = new KafkaMsg(KafkaMsg.DELETE_USER_FEED, user, null, null, null, -1, -1, null, null, false);
         serverVersion = publisher.publish(topic, Domain.get(), op);
         throw new WebApplicationException(Response.status(HTTP_OK_VOID).header(HEADER_VERSION, serverVersion).build());
     }
@@ -132,5 +132,5 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
             sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
         }
     }
-
+    
 }
