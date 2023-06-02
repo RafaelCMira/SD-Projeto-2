@@ -42,7 +42,6 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
         waitIfNeeded(version);
 
         KafkaMsg kafkaMsg = new KafkaMsg(KafkaMsg.POST_MESSAGE, user, pwd, null, msg, -1, -1);
-        kafkaMsg.setOperation(KafkaMsg.POST_MESSAGE);
         serverVersion = publisher.publish(topic, Domain.get(), kafkaMsg);
         sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)

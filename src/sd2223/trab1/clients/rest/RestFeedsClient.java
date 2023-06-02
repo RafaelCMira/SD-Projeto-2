@@ -5,8 +5,10 @@ import static sd2223.trab1.api.java.Result.ErrorCode.NOT_IMPLEMENTED;
 
 import java.util.List;
 
+import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import sd2223.trab1.api.Message;
 import sd2223.trab1.api.java.Feeds;
@@ -17,14 +19,14 @@ import sd2223.trab1.api.rest.FeedsService;
 public class RestFeedsClient extends RestClient implements Feeds {
     protected static final String PERSONAL = "personal";
 
-    private Long VERSION;
+    private Long version;
 
 
     final protected WebTarget target;
 
     public RestFeedsClient(String serverURI) {
         super(serverURI);
-        VERSION = -1L;
+        version = -1L;
         target = client.target(serverURI).path(FeedsService.PATH);
     }
 
@@ -45,7 +47,7 @@ public class RestFeedsClient extends RestClient implements Feeds {
 
     @Override
     public Result<Long> postMessage(String user, String pwd, Message msg) {
-        return error(NOT_IMPLEMENTED);
+        return super.reTry(() -> clt_postMessage(user, pwd, msg));
     }
 
     @Override
@@ -69,10 +71,20 @@ public class RestFeedsClient extends RestClient implements Feeds {
     }
 
 
+    private Result<Long> clt_postMessage(String user, String pwd, Message msg) {
+        Response r = target.path(user)
+                .queryParam(FeedsService.PWD, pwd)
+                .request()
+                .header(FeedsService.HEADER_VERSION, version)
+                .post(Entity.entity(msg, MediaType.APPLICATION_JSON));
+
+        return super.toJavaResult(r, Long.class);
+    }
+
     private Result<Message> clt_getMessage(String user, long mid) {
         Response r = target.path(user).path(Long.toString(mid))
                 .request()
-                .header(FeedsService.HEADER_VERSION, VERSION)
+                .header(FeedsService.HEADER_VERSION, version)
                 .get();
 
         return super.toJavaResult(r, Message.class);
@@ -82,7 +94,7 @@ public class RestFeedsClient extends RestClient implements Feeds {
         Response r = target.path(user)
                 .queryParam(FeedsService.TIME, time)
                 .request()
-                .header(FeedsService.HEADER_VERSION, VERSION)
+                .header(FeedsService.HEADER_VERSION, version)
                 .get();
 
         return super.toJavaResult(r, new GenericType<List<Message>>() {
@@ -92,7 +104,7 @@ public class RestFeedsClient extends RestClient implements Feeds {
     public Result<Void> clt_deleteUserFeed(String user) {
         Response r = target.path(PERSONAL).path(user)
                 .request()
-                .header(FeedsService.HEADER_VERSION, VERSION)
+                .header(FeedsService.HEADER_VERSION, version)
                 .delete();
 
         return super.toJavaResult(r, Void.class);

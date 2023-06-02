@@ -20,16 +20,16 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
     static final String KAFKA_BROKERS = "kafka:9092";
 
     static int MAX_NUM_THREADS = 4;
-    
+
     final KafkaSubscriber receiver;
     final SyncPoint<KafkaMsg> sync;
     final JavaFeedsPush impl;
 
-    public TotalOrderExecutor(String replicaId) {
-        this.receiver = KafkaSubscriber.createSubscriber(KAFKA_BROKERS, List.of(Domain.get()), FROM_BEGINNING);
+    public TotalOrderExecutor(String domain) {
+        this.receiver = KafkaSubscriber.createSubscriber(KAFKA_BROKERS, List.of(domain), FROM_BEGINNING);
         this.receiver.start(false, this);
         this.sync = SyncPoint.getInstance();
-        this.impl = new JavaFeedsPush();
+        this.impl = JavaFeedsPush.getInstance();
     }
 
 

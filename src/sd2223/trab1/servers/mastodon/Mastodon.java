@@ -253,7 +253,7 @@ public class Mastodon implements FeedsPush {
 
             Response response = service.execute(request);
             if (response.getCode() == HTTP_OK) {
-               return ok();
+                return ok();
             }
         } catch (Exception x) {
             x.printStackTrace();

@@ -18,14 +18,23 @@ import sd2223.trab1.api.Message;
 import sd2223.trab1.api.PushMessage;
 import sd2223.trab1.api.java.FeedsPush;
 import sd2223.trab1.api.java.Result;
+import sd2223.trab1.servers.kafka.sync.SyncPoint;
 
 public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPush {
     private static final long PERMANENT_REMOVAL_DELAY = 30;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     final Map<Long, Set<String>> msgs2users = new ConcurrentHashMap<>();
 
+    private static JavaFeedsPush instance;
+
     public JavaFeedsPush() {
         super(new JavaFeedsPushPreconditions());
+    }
+    
+    synchronized public static JavaFeedsPush getInstance() {
+        if (instance == null)
+            instance = new JavaFeedsPush();
+        return instance;
     }
 
     @Override

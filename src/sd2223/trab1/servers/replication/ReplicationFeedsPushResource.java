@@ -10,7 +10,7 @@ import sd2223.trab1.servers.java.JavaFeedsPush;
 public class ReplicationFeedsPushResource extends ReplicationFeedsResource<FeedsPush> implements FeedsServicePush {
 
     public ReplicationFeedsPushResource() {
-        super(new JavaFeedsPush());
+        super(JavaFeedsPush.getInstance());
     }
 
     @Override
