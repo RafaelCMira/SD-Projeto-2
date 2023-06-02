@@ -3,7 +3,7 @@ package sd2223.trab1.servers;
 public class Domain {
     static String domain;
     static long uuid;
-
+    
     public static void set(String _domain, long _uuid) {
         domain = _domain;
         uuid = _uuid;

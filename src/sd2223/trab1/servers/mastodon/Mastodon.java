@@ -235,6 +235,11 @@ public class Mastodon implements FeedsPush {
     }
 
     @Override
+    public Result<Long> checkMsg(String user, String pwd, Message msg) {
+        return null;
+    }
+
+    @Override
     public Result<Void> push_updateFollowers(String user, String follower, boolean following) {
         return error(NOT_IMPLEMENTED);
     }

@@ -1,33 +1,34 @@
 package sd2223.trab1.api;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class PushMessage {
-	private Message message;
-	private Set<String> subscribers;
-	
-	public PushMessage() {
-	}
+public class PushMessage implements Serializable {
+    private Message message;
+    private Set<String> subscribers;
 
-	public PushMessage(Set<String> subs, Message msg ) {
-		this.subscribers = subs;
-		this.message = msg;
-	}
-	
-	public Message getMessage() {
-		return message;
-	}
+    public PushMessage() {
+    }
 
-	public void setMessage(Message message) {
-		this.message = message;
-	}
+    public PushMessage(Set<String> subs, Message msg) {
+        this.subscribers = subs;
+        this.message = msg;
+    }
 
-	public Set<String> getSubscribers() {
-		return subscribers;
-	}
+    public Message getMessage() {
+        return message;
+    }
 
-	public void setSubscribers(Set<String> subscribers) {
-		this.subscribers = subscribers;
-	}
-	
+    public void setMessage(Message message) {
+        this.message = message;
+    }
+
+    public Set<String> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(Set<String> subscribers) {
+        this.subscribers = subscribers;
+    }
+
 }

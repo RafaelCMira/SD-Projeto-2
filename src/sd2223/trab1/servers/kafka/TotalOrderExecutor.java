@@ -5,6 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import sd2223.trab1.servers.Domain;
 import sd2223.trab1.servers.java.JavaFeedsPush;
 import sd2223.trab1.servers.kafka.sync.SyncPoint;
+import sd2223.trab1.servers.replication.ReplicationFeedsResource;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -12,18 +13,18 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 
 public class TotalOrderExecutor extends Thread implements RecordProcessor {
     static final String FROM_BEGINNING = "earliest";
-
     static final String KAFKA_BROKERS = "kafka:9092";
 
-    static int MAX_NUM_THREADS = 4;
-
     final KafkaSubscriber receiver;
-    final SyncPoint<KafkaMsg> sync;
+    final SyncPoint<String> sync;
     final JavaFeedsPush impl;
+
+    private static final Logger Log = Logger.getLogger(TotalOrderExecutor.class.getName());
 
     public TotalOrderExecutor(String domain) {
         this.receiver = KafkaSubscriber.createSubscriber(KAFKA_BROKERS, List.of(domain), FROM_BEGINNING);
@@ -81,38 +82,39 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
     }
 
     private void execPostMessage(long version, KafkaMsg msg) {
+        System.out.println("ENTREI NO POST_MESSAGE");
         impl.postMessage(msg.getUser(), msg.getPwd(), msg.getMsg());
-        sync.setResult(version, msg);
+        sync.setResult(version, String.valueOf(msg));
     }
 
     private void execRemoveFromPersonal(long version, KafkaMsg msg) {
         impl.removeFromPersonalFeed(msg.getUser(), msg.getMid(), msg.getPwd());
-        sync.setResult(version, msg);
+        sync.setResult(version, String.valueOf(msg));
     }
 
     private void execSubUser(long version, KafkaMsg msg) {
         impl.subUser(msg.getUser(), msg.getUserSub(), msg.getPwd());
-        sync.setResult(version, msg);
+        sync.setResult(version, String.valueOf(msg));
     }
 
     private void execUnsubUser(long version, KafkaMsg msg) {
         impl.unsubscribeUser(msg.getUser(), msg.getUserSub(), msg.getPwd());
-        sync.setResult(version, msg);
+        sync.setResult(version, String.valueOf(msg));
     }
 
     private void execDeleteUserFeed(long version, KafkaMsg msg) {
         impl.deleteUserFeed(msg.getUser());
-        sync.setResult(version, msg);
+        sync.setResult(version, String.valueOf(msg));
     }
 
     private void execPushMessage(long version, KafkaMsg msg) {
         impl.push_PushMessage(msg.getPushMessage());
-        sync.setResult(version, msg);
+        sync.setResult(version, String.valueOf(msg));
     }
 
     private void execUpdateFollowers(long version, KafkaMsg msg) {
         impl.push_updateFollowers(msg.getUser(), msg.getFollower(), msg.isFollowing());
-        sync.setResult(version, msg);
+        sync.setResult(version, String.valueOf(msg));
     }
 
     /*

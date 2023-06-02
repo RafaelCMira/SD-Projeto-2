@@ -16,6 +16,7 @@ import sd2223.trab1.api.Message;
 import sd2223.trab1.api.java.Feeds;
 import sd2223.trab1.api.java.Result;
 import sd2223.trab1.servers.Domain;
+import sd2223.trab1.servers.replication.ReplicationFeedsServer;
 
 public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
     private static final long FEEDS_MID_PREFIX = 1_000_000_000;
@@ -39,11 +40,14 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
 
     @Override
     public Result<Long> postMessage(String user, String pwd, Message msg) {
-
         var preconditionsResult = preconditions.postMessage(user, pwd, msg);
         if (!preconditionsResult.isOK())
             return preconditionsResult;
 
+        // var res = checkMsg(user, pwd, msg);
+        // if (!res.isOK()) return Result.error(res.error());
+
+        //  long mid = res.value();
         Long mid = serial.incrementAndGet();
         msg.setId(mid);
         msg.setCreationTime(System.currentTimeMillis());
@@ -56,9 +60,16 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
         return Result.ok(mid);
     }
 
+    public Result<Long> checkMsg(String user, String pwd, Message msg) {
+        var preconditionsResult = preconditions.postMessage(user, pwd, msg);
+        if (!preconditionsResult.isOK())
+            return preconditionsResult;
+
+        return Result.ok(serial.incrementAndGet());
+    }
+
     @Override
     public Result<Void> removeFromPersonalFeed(String user, long mid, String pwd) {
-
         var preconditionsResult = preconditions.removeFromPersonalFeed(user, mid, pwd);
         if (!preconditionsResult.isOK())
             return preconditionsResult;

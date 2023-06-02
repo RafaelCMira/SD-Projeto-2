@@ -13,8 +13,10 @@ import sd2223.trab1.servers.kafka.KafkaPublisher;
 import sd2223.trab1.servers.kafka.KafkaUtils;
 import sd2223.trab1.servers.kafka.sync.SyncPoint;
 import sd2223.trab1.servers.rest.RestFeedsPushResource;
+import sd2223.trab1.servers.rest.RestFeedsResource;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Singleton
 public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushResource implements FeedsService {
@@ -25,6 +27,8 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     protected final SyncPoint<String> sync;
     protected long serverVersion;
     protected final String topic;
+
+    private static final Logger Log = Logger.getLogger(ReplicationFeedsResource.class.getName());
 
     final protected T impl;
 
@@ -41,9 +45,16 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     public long postMessage(Long version, String user, String pwd, Message msg) {
         writeWaitIfNeeded(version);
 
+        // long mid = super.fromJavaResult(impl.checkMsg(user, pwd, msg));
+
+        //msg.setId(mid);
+
         KafkaMsg kafkaMsg = new KafkaMsg(KafkaMsg.POST_MESSAGE, user, pwd, null, msg, -1, -1, null, null, false);
+
         serverVersion = publisher.publish(topic, Domain.get(), kafkaMsg);
+
         sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
+
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
                 .encoding(MediaType.APPLICATION_JSON).entity(msg.getId()).build());
     }
@@ -59,9 +70,14 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
     @Override
     public Message getMessage(Long version, String user, long mid) {
+        Log.info("ENTREI NO GETMESSAGE1\n");
+
         readWaitIfNeeded(version);
 
+        Log.info("ENTREI NO GETMESSAGE2\n");
+
         var result = super.fromJavaResult(impl.getMessage(user, mid));
+        Log.info("ENTREI NO GETMESSAGE3\n");
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
                 .encoding(MediaType.APPLICATION_JSON).entity(result).build());
     }
@@ -132,5 +148,5 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
             sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
         }
     }
-    
+
 }

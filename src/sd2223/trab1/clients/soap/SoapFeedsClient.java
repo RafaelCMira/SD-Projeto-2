@@ -53,6 +53,11 @@ public class SoapFeedsClient<T extends FeedsService> extends SoapClient implemen
     }
 
     @Override
+    public Result<Long> checkMsg(String user, String pwd, Message msg) {
+        return null;
+    }
+
+    @Override
     public Result<Long> postMessage(String user, String pwd, Message msg) {
         return error(NOT_IMPLEMENTED);
     }
