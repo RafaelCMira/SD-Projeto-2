@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
 
 import sd2223.trab1.api.Message;
 import sd2223.trab1.api.java.Feeds;
@@ -20,6 +21,8 @@ import sd2223.trab1.servers.replication.ReplicationFeedsServer;
 
 public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
     private static final long FEEDS_MID_PREFIX = 1_000_000_000;
+
+    private static final Logger Log = Logger.getLogger(JavaFeedsCommon.class.getName());
 
     protected AtomicLong serial = new AtomicLong(Domain.uuid() * FEEDS_MID_PREFIX);
 
@@ -40,17 +43,19 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
 
     @Override
     public Result<Long> postMessage(String user, String pwd, Message msg) {
-        var preconditionsResult = preconditions.postMessage(user, pwd, msg);
+        /*var preconditionsResult = preconditions.postMessage(user, pwd, msg);
         if (!preconditionsResult.isOK())
-            return preconditionsResult;
+            return preconditionsResult;*/
 
-        // var res = checkMsg(user, pwd, msg);
-        // if (!res.isOK()) return Result.error(res.error());
+        var res = checkMsg(user, pwd, msg);
+        if (!res.isOK()) return Result.error(res.error());
 
-        //  long mid = res.value();
-        Long mid = serial.incrementAndGet();
+        Long mid = res.value();
+        // Long mid = serial.incrementAndGet();
         msg.setId(mid);
         msg.setCreationTime(System.currentTimeMillis());
+
+        Log.info("Mid = " + mid);
 
         FeedInfo ufi = feeds.computeIfAbsent(user, FeedInfo::new);
         synchronized (ufi.user()) {

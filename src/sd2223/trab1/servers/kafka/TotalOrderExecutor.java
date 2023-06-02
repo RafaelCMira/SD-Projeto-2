@@ -37,7 +37,6 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
     @Override
     public void onReceive(ConsumerRecord<String, byte[]> r) {
         var version = r.offset();
-        //   KafkaMsg msg = deserializeObject(r.value(), KafkaMsg.class);
         KafkaMsg msg = deserializeByteArray(r.value());
         switch (msg.getOperation()) {
             case KafkaMsg.POST_MESSAGE -> execPostMessage(version, msg);
@@ -117,21 +116,4 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
         sync.setResult(version, String.valueOf(msg));
     }
 
-    /*
-    public void run() {
-        for (; ; ) {
-            var operation = "op" + System.nanoTime();
-            var version = sender.publish(TOPIC, replicaId, operation);
-            var result = sync.waitForResult(version);
-            System.out.printf("Op: %s, version: %s, result: %s\n", operation, version, result);
-            sleep(500);
-            //System.err.printf("replicaId: %s, sync state: %s", replicaId, sync);
-        }
-    }*/
-
-    /*
-    public static void main(String[] args) throws Exception {
-        for (int i = 0; i < MAX_NUM_THREADS; i++)
-            new TotalOrderExecutor("replica(" + i + ")").start();
-    }*/
 }

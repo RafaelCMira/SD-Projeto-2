@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import sd2223.trab1.api.Message;
@@ -19,18 +20,20 @@ import sd2223.trab1.api.PushMessage;
 import sd2223.trab1.api.java.FeedsPush;
 import sd2223.trab1.api.java.Result;
 import sd2223.trab1.servers.kafka.sync.SyncPoint;
+import sd2223.trab1.servers.replication.ReplicationFeedsResource;
 
 public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPush {
     private static final long PERMANENT_REMOVAL_DELAY = 30;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     final Map<Long, Set<String>> msgs2users = new ConcurrentHashMap<>();
 
+    private static final Logger Log = Logger.getLogger(ReplicationFeedsResource.class.getName());
     private static JavaFeedsPush instance;
 
     public JavaFeedsPush() {
         super(new JavaFeedsPushPreconditions());
     }
-    
+
     synchronized public static JavaFeedsPush getInstance() {
         if (instance == null)
             instance = new JavaFeedsPush();
@@ -65,13 +68,16 @@ public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPu
             return preconditionsResult;
 
         var ufi = feeds.get(user);
-        if (ufi == null)
+        if (ufi == null) {
+            Log.info("user nao existe");
             return error(NOT_FOUND);
+        }
 
         synchronized (ufi.user()) {
-            if (!ufi.messages().contains(mid))
+            if (!ufi.messages().contains(mid)) {
+                Log.info("msg nao existe");
                 return error(NOT_FOUND);
-
+            }
             return ok(messages.get(mid));
         }
     }

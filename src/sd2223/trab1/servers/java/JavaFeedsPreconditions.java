@@ -12,6 +12,7 @@ import static sd2223.trab1.clients.Clients.UsersClients;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -23,9 +24,11 @@ import sd2223.trab1.api.java.Feeds;
 import sd2223.trab1.api.java.Result;
 import sd2223.trab1.api.java.Result.ErrorCode;
 import sd2223.trab1.servers.java.JavaFeedsCommon.FeedUser;
+import sd2223.trab1.servers.replication.ReplicationFeedsResource;
 
 public abstract class JavaFeedsPreconditions implements Feeds {
 
+    private static final Logger Log = Logger.getLogger(JavaFeedsPreconditions.class.getName());
     private static final long USER_CACHE_EXPIRATION = 3000;
 
     protected final LoadingCache<FeedUser, Result<User>> users = CacheBuilder.newBuilder()
@@ -81,8 +84,12 @@ public abstract class JavaFeedsPreconditions implements Feeds {
             return redirected(FeedsClients.get(ui.domain()).getMessage(user, mid));
 
         var ures = getUser(ui);
-        if (ures.error() == NOT_FOUND)
+        if (ures.error() == NOT_FOUND) {
+
+            Log.info("PRECONDIÇAO USER NAO EXISTE");
             return error(NOT_FOUND);
+        }
+
 
         return ok();
     }
