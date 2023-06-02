@@ -70,7 +70,8 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
         if (!preconditionsResult.isOK())
             return preconditionsResult;
 
-        return Result.ok(serial.incrementAndGet());
+        //  return Result.ok(serial.incrementAndGet());
+        return Result.ok(Domain.generateMessageId());
     }
 
     @Override
