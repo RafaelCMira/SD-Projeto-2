@@ -7,6 +7,7 @@ import sd2223.trab1.servers.java.JavaFeedsPush;
 import sd2223.trab1.servers.kafka.sync.SyncPoint;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.List;
@@ -15,53 +16,58 @@ import java.util.Objects;
 
 public class TotalOrderExecutor extends Thread implements RecordProcessor {
     static final String FROM_BEGINNING = "earliest";
+
     static final String KAFKA_BROKERS = "kafka:9092";
 
     static int MAX_NUM_THREADS = 4;
-
-    final String replicaId;
-
-    final KafkaPublisher sender;
+    
     final KafkaSubscriber receiver;
-    final SyncPoint<String> sync;
-
-    final JavaFeedsPush javaFeedsPush;
+    final SyncPoint<KafkaMsg> sync;
+    final JavaFeedsPush impl;
 
     public TotalOrderExecutor(String replicaId) {
-        this.replicaId = replicaId;
-        this.sender = KafkaPublisher.createPublisher(KAFKA_BROKERS);
         this.receiver = KafkaSubscriber.createSubscriber(KAFKA_BROKERS, List.of(Domain.get()), FROM_BEGINNING);
         this.receiver.start(false, this);
         this.sync = SyncPoint.getInstance();
-        this.javaFeedsPush = new JavaFeedsPush();
+        this.impl = new JavaFeedsPush();
     }
 
 
     @Override
     public void onReceive(ConsumerRecord<String, byte[]> r) {
         var version = r.offset();
-        KafkaOperation msg = deserializeObject(r.value(), KafkaOperation.class);
-
-        switch (Objects.requireNonNull(msg).getOp()) {
-            case KafkaOperation.POST_MESSAGE -> {
-                javaFeedsPush.postMessage(msg.getUser(), msg.getPwd(), msg.getMsg());
-                sync.setResult(version, String.valueOf(msg)); // tentar sem a conversao para string
+        //   KafkaMsg msg = deserializeObject(r.value(), KafkaMsg.class);
+        KafkaMsg msg = deserializeByteArray(r.value());
+        switch (msg.getOperation()) {
+            case KafkaMsg.POST_MESSAGE -> {
+                impl.postMessage(msg.getUser(), msg.getPwd(), msg.getMsg());
+                sync.setResult(version, msg);
             }
         }
     }
 
     public static <T extends Serializable> T deserializeObject(byte[] serializedObject, Class<T> objectType) {
-        try {
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(serializedObject);
-            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(serializedObject);
+             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream)) {
             Object object = objectInputStream.readObject();
-            objectInputStream.close();
             return objectType.cast(object);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
+    private KafkaMsg deserializeByteArray(byte[] byteArray) {
+        KafkaMsg kafkaMsg = null;
+        try (ByteArrayInputStream bis = new ByteArrayInputStream(byteArray);
+             ObjectInputStream ois = new ObjectInputStream(bis)) {
+            kafkaMsg = (KafkaMsg) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return kafkaMsg;
+    }
+
 
     private void sleep(int ms) {
         try {
@@ -83,8 +89,9 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
         }
     }*/
 
+    /*
     public static void main(String[] args) throws Exception {
         for (int i = 0; i < MAX_NUM_THREADS; i++)
             new TotalOrderExecutor("replica(" + i + ")").start();
-    }
+    }*/
 }

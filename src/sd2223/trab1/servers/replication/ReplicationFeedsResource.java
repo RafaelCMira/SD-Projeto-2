@@ -1,5 +1,6 @@
 package sd2223.trab1.servers.replication;
 
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -7,48 +8,42 @@ import sd2223.trab1.api.Message;
 import sd2223.trab1.api.java.Feeds;
 import sd2223.trab1.api.rest.FeedsService;
 import sd2223.trab1.servers.Domain;
-import sd2223.trab1.servers.kafka.KafkaOperation;
+import sd2223.trab1.servers.kafka.KafkaMsg;
 import sd2223.trab1.servers.kafka.KafkaPublisher;
 import sd2223.trab1.servers.kafka.KafkaUtils;
 import sd2223.trab1.servers.kafka.sync.SyncPoint;
-import sd2223.trab1.servers.rest.RestResource;
+import sd2223.trab1.servers.rest.RestFeedsPushResource;
 
 import java.util.List;
 
-public class ReplicationFeedsResource<T extends Feeds> extends RestResource implements FeedsService {
-
+@Singleton
+public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushResource implements FeedsService {
+    protected static final int HTTP_OK = 200;
+    protected static final int HTTP_OK_VOID = 204;
     public static final String KAFKA_BROKERS = "kafka:9092";
-
-    private static final int HTTP_OK = 200;
-    protected KafkaPublisher publisher;
-    protected SyncPoint<String> sync;
+    protected final KafkaPublisher publisher;
+    protected final SyncPoint<String> sync;
     protected long serverVersion;
-
-    protected String topic;
-
-    public ReplicationFeedsResource(T impl) {
-        this.impl = impl;
-        serverVersion = -1;
-        publisher = KafkaPublisher.createPublisher(KAFKA_BROKERS);
-        sync = SyncPoint.getInstance();
-        topic = Domain.get();
-        KafkaUtils.createTopic(Domain.get());
-    }
+    protected final String topic;
 
     final protected T impl;
 
+    public ReplicationFeedsResource(T impl) {
+        this.impl = impl;
+        this.serverVersion = -1;
+        this.publisher = KafkaPublisher.createPublisher(KAFKA_BROKERS);
+        this.sync = SyncPoint.getInstance();
+        this.topic = Domain.get();
+        KafkaUtils.createTopic(topic);
+    }
+
     @Override
     public long postMessage(Long version, String user, String pwd, Message msg) {
-        if (version != null && version > serverVersion) {
-            sync.waitForVersion(version, Integer.MAX_VALUE);
-        }
+        waitIfNeeded(version);
 
-        if (sync.getVersion() < serverVersion) {
-            sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
-        }
-
-        KafkaOperation op = new KafkaOperation(KafkaOperation.POST_MESSAGE, user, pwd, null, msg, -1, -1);
-        serverVersion = publisher.publish(topic, Domain.get(), op);
+        KafkaMsg kafkaMsg = new KafkaMsg(KafkaMsg.POST_MESSAGE, user, pwd, null, msg, -1, -1);
+        kafkaMsg.setOperation(KafkaMsg.POST_MESSAGE);
+        serverVersion = publisher.publish(topic, Domain.get(), kafkaMsg);
         sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
                 .encoding(MediaType.APPLICATION_JSON).entity(msg.getId()).build());
@@ -56,17 +51,11 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestResource impl
 
     @Override
     public void removeFromPersonalFeed(Long version, String user, long mid, String pwd) {
-        if (version != null && version > serverVersion) {
-            sync.waitForVersion(version, Integer.MAX_VALUE);
-        }
+        waitIfNeeded(version);
 
-        if (sync.getVersion() < serverVersion) {
-            sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
-        }
-
-        KafkaOperation op = new KafkaOperation(KafkaOperation.REMOVE_FROM_PERSONAL, user, pwd, null, null, mid, -1);
+        KafkaMsg op = new KafkaMsg(KafkaMsg.REMOVE_FROM_PERSONAL, user, pwd, null, null, mid, -1);
         serverVersion = publisher.publish(topic, Domain.get(), op);
-        throw new WebApplicationException(Response.status(204).header(HEADER_VERSION, serverVersion).build());
+        throw new WebApplicationException(Response.status(HTTP_OK_VOID).header(HEADER_VERSION, serverVersion).build());
     }
 
     @Override
@@ -81,7 +70,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestResource impl
         }
 
         var result = super.fromJavaResult(impl.getMessage(user, mid));
-        throw new WebApplicationException(Response.status(200).header(HEADER_VERSION, serverVersion)
+        throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
                 .encoding(MediaType.APPLICATION_JSON).entity(result).build());
     }
 
@@ -96,39 +85,27 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestResource impl
             sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
         }
 
-        var result = fromJavaResult(impl.getMessages(user, time));
-        throw new WebApplicationException(Response.status(200).header(HEADER_VERSION, serverVersion)
+        var result = super.fromJavaResult(impl.getMessages(user, time));
+        throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
                 .encoding(MediaType.APPLICATION_JSON).entity(result).build());
     }
 
     @Override
     public void subUser(Long version, String user, String userSub, String pwd) {
-        if (version != null && version > serverVersion) {
-            sync.waitForVersion(version, Integer.MAX_VALUE);
-        }
+        waitIfNeeded(version);
 
-        if (sync.getVersion() < serverVersion) {
-            sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
-        }
-
-        KafkaOperation op = new KafkaOperation(KafkaOperation.SUB, user, pwd, userSub, null, -1, -1);
+        KafkaMsg op = new KafkaMsg(KafkaMsg.SUB, user, pwd, userSub, null, -1, -1);
         serverVersion = publisher.publish(topic, Domain.get(), op);
-        throw new WebApplicationException(Response.status(204).header(HEADER_VERSION, serverVersion).build());
+        throw new WebApplicationException(Response.status(HTTP_OK_VOID).header(HEADER_VERSION, serverVersion).build());
     }
 
     @Override
     public void unsubscribeUser(Long version, String user, String userSub, String pwd) {
-        if (version != null && version > serverVersion) {
-            sync.waitForVersion(version, Integer.MAX_VALUE);
-        }
+        waitIfNeeded(version);
 
-        if (sync.getVersion() < serverVersion) {
-            sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
-        }
-
-        KafkaOperation op = new KafkaOperation(KafkaOperation.UNSUB, user, pwd, userSub, null, -1, -1);
+        KafkaMsg op = new KafkaMsg(KafkaMsg.UNSUB, user, pwd, userSub, null, -1, -1);
         serverVersion = publisher.publish(topic, Domain.get(), op);
-        throw new WebApplicationException(Response.status(204).header(HEADER_VERSION, serverVersion).build());
+        throw new WebApplicationException(Response.status(HTTP_OK_VOID).header(HEADER_VERSION, serverVersion).build());
     }
 
     @Override
@@ -142,13 +119,21 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestResource impl
             sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
         }
 
-        var result = fromJavaResult(impl.listSubs(user));
-        throw new WebApplicationException(Response.status(200).header(HEADER_VERSION, serverVersion)
+        var result = super.fromJavaResult(impl.listSubs(user));
+        throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
                 .encoding(MediaType.APPLICATION_JSON).entity(result).build());
     }
 
     @Override
     public void deleteUserFeed(Long version, String user) {
+        waitIfNeeded(version);
+
+        KafkaMsg op = new KafkaMsg(KafkaMsg.DELETE_USER_FEED, user, null, null, null, -1, -1);
+        serverVersion = publisher.publish(topic, Domain.get(), op);
+        throw new WebApplicationException(Response.status(HTTP_OK_VOID).header(HEADER_VERSION, serverVersion).build());
+    }
+
+    protected void waitIfNeeded(Long version) {
         if (version != null && version > serverVersion) {
             sync.waitForVersion(version, Integer.MAX_VALUE);
         }
@@ -156,7 +141,6 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestResource impl
         if (sync.getVersion() < serverVersion) {
             sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
         }
-
-
     }
+
 }

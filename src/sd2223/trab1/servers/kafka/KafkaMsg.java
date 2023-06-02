@@ -4,23 +4,25 @@ import sd2223.trab1.api.Message;
 
 import java.io.Serializable;
 
-public class KafkaOperation implements Serializable {
+
+public class KafkaMsg implements Serializable {
 
     public static final String POST_MESSAGE = "POST_MESSAGE";
     public static final String REMOVE_FROM_PERSONAL = "REMOVE_FROM_PERSONAL";
     public static final String SUB = "SUB";
     public static final String UNSUB = "UNSUB";
+    public static final String DELETE_USER_FEED = "DELETE_USER_FEED";
 
+    private String operation;
     private String user;
     private String pwd;
     private String userSub;
-    private String op;
     private Message msg;
     private long mid;
     private long time;
-
-    public KafkaOperation() {
-        this.op = null;
+    
+    public KafkaMsg() {
+        this.operation = null;
         this.user = null;
         this.pwd = null;
         this.userSub = null;
@@ -29,11 +31,11 @@ public class KafkaOperation implements Serializable {
         this.time = -1;
     }
 
-    public KafkaOperation(String op, String user, String pwd, String userSub, Message msg, long mid, long time) {
+    public KafkaMsg(String operation, String user, String pwd, String userSub, Message msg, long mid, long time) {
+        this.operation = operation;
         this.user = user;
         this.pwd = pwd;
         this.userSub = userSub;
-        this.op = op;
         this.msg = msg;
         this.mid = mid;
         this.time = time;
@@ -51,8 +53,8 @@ public class KafkaOperation implements Serializable {
         return userSub;
     }
 
-    public String getOp() {
-        return op;
+    public String getOperation() {
+        return operation;
     }
 
     public Message getMsg() {
@@ -79,8 +81,8 @@ public class KafkaOperation implements Serializable {
         this.userSub = userSub;
     }
 
-    public void setOp(String op) {
-        this.op = op;
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 
     public void setMsg(Message msg) {

@@ -1,6 +1,5 @@
 package sd2223.trab1.servers.proxy;
 
-import jakarta.inject.Singleton;
 import sd2223.trab1.api.PushMessage;
 import sd2223.trab1.api.java.FeedsPush;
 import sd2223.trab1.api.rest.FeedsServicePush;

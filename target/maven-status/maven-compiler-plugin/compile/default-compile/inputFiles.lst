@@ -5,7 +5,6 @@ C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\rest\RestUsersResource.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\clients\rest\RestUsersClient.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\java\AbstractServer.java
-C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\kafka\KafkaOperation.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\mastodon\MastodonApi.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\java\JavaUsers.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\rest\RestFeedsServer.java
@@ -41,6 +40,7 @@ C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\proxy\ProxyFeedsResource.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\rest\CustomLoggingFilter.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\rest\RestUsersServer.java
+C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\servers\kafka\KafkaMsg.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\api\rest\FeedsServicePush.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\clients\ClientFactory.java
 C:\Users\Rafael\Documents\Universidade\InteiiJ Projects\SD\Projeto-2\src\sd2223\trab1\api\java\Result.java

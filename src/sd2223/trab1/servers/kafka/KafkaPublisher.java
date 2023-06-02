@@ -37,10 +37,12 @@ public class KafkaPublisher {
         this.producer.close();
     }
 
-    public long publish(String topic, String key, KafkaOperation value) {
+    public long publish(String topic, String key, KafkaMsg value) {
         try {
-            var bytes = serializeObject(value);
-            long offset = producer.send(new ProducerRecord<>(topic, key, bytes)).get().offset();
+            byte[] bytes = serializeObject(value);
+            ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, key, bytes);
+            var result = producer.send(record).get();
+            long offset = result.offset();
             return offset;
         } catch (ExecutionException | InterruptedException x) {
             x.printStackTrace();
@@ -48,29 +50,27 @@ public class KafkaPublisher {
         return -1;
     }
 
-    private byte[] serializeObject(KafkaOperation object) {
+    public long publish(String topic, KafkaMsg value) {
         try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-            objectOutputStream.writeObject(object);
-            objectOutputStream.close();
-            return byteArrayOutputStream.toByteArray();
+            byte[] bytes = serializeObject(value);
+            long offset = producer.send(new ProducerRecord<>(topic, bytes)).get().offset();
+            return offset;
+        } catch (ExecutionException | InterruptedException x) {
+            x.printStackTrace();
+        }
+        return -1;
+    }
+
+    private byte[] serializeObject(KafkaMsg kafkaMsg) {
+        try (ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+             ObjectOutputStream objStream = new ObjectOutputStream(byteStream)) {
+            objStream.writeObject(kafkaMsg);
+            return byteStream.toByteArray();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    /*
-    public long publish(String topic, String value) {
-        try {
-            long offset = producer.send(new ProducerRecord<>(topic, value)).get().offset();
-            return offset;
-        } catch (ExecutionException | InterruptedException x) {
-            x.printStackTrace();
-        }
-        return -1;
-    }
-     */
 
 }

@@ -52,7 +52,7 @@ sd2223\trab1\servers\soap\SoapFeedsServer.class
 sd2223\trab1\clients\Clients.class
 sd2223\trab1\servers\mastodon\msgs\PostStatusResult.class
 sd2223\trab1\servers\java\JavaFeedsCommon.class
-sd2223\trab1\servers\kafka\KafkaOperation.class
+sd2223\trab1\servers\kafka\KafkaMsg.class
 sd2223\trab1\servers\mastodon\Mastodon.class
 sd2223\trab1\servers\replication\ReplicationFeedsResource.class
 sd2223\trab1\servers\replication\ReplicationFeedsServer.class
