@@ -88,11 +88,8 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
     }
 
     private void execPushMessage(long version, KafkaMsg msg) {
-        log.info("ENTREI NO execPush1\n");
         impl.push_PushMessage(msg.getPushMessage());
-        log.info("ENTREI NO execPush2\n");
         sync.setResult(version, String.valueOf(msg));
-        log.info("ENTREI NO execPush3\n");
     }
 
     private void execUpdateFollowers(long version, KafkaMsg msg) {

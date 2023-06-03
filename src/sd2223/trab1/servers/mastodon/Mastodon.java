@@ -235,7 +235,7 @@ public class Mastodon implements FeedsPush {
     }
 
     @Override
-    public Result<Long> checkMsg(String user, String pwd, Message msg) {
+    public Result<Long> getMsgServerId(String user, String pwd, Message msg) {
         return null;
     }
 

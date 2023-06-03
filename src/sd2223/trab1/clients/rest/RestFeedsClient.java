@@ -36,7 +36,7 @@ public class RestFeedsClient extends RestClient implements Feeds {
     }
 
     @Override
-    public Result<Long> checkMsg(String user, String pwd, Message msg) {
+    public Result<Long> getMsgServerId(String user, String pwd, Message msg) {
         return null;
     }
 

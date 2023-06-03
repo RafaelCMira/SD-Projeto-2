@@ -47,13 +47,9 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
         if (!preconditionsResult.isOK())
             return preconditionsResult;
 
-        // var res = checkMsg(user, pwd, msg);
-        // if (!res.isOK()) return Result.error(res.error());
-        // Long mid = res.value();
-
         Long mid = serial.incrementAndGet();
 
-        if (msg.getId() != -1) mid = msg.getId();
+        if (msg.getId() != -1) mid = msg.getId(); // com isto ja da para usar todo o codigo da mesma forma
 
         msg.setId(mid);
         msg.setCreationTime(System.currentTimeMillis());
@@ -67,7 +63,7 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
     }
 
 
-    public Result<Long> checkMsg(String user, String pwd, Message msg) {
+    public Result<Long> getMsgServerId(String user, String pwd, Message msg) {
         var preconditionsResult = preconditions.postMessage(user, pwd, msg);
         if (!preconditionsResult.isOK())
             return preconditionsResult;
@@ -104,11 +100,9 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
 
     @Override
     public Result<Void> subUser(String user, String userSub, String pwd) {
-
         var preconditionsResult = preconditions.subUser(user, userSub, pwd);
         if (!preconditionsResult.isOK())
             return preconditionsResult;
-
 
         var ufi = feeds.computeIfAbsent(user, FeedInfo::new);
         synchronized (ufi.user()) {
@@ -119,7 +113,6 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
 
     @Override
     public Result<Void> unsubscribeUser(String user, String userSub, String pwd) {
-
         var preconditionsResult = preconditions.unsubscribeUser(user, userSub, pwd);
         if (!preconditionsResult.isOK())
             return preconditionsResult;
@@ -133,7 +126,6 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
 
     @Override
     public Result<List<String>> listSubs(String user) {
-
         var preconditionsResult = preconditions.listSubs(user);
         if (!preconditionsResult.isOK())
             return preconditionsResult;
@@ -146,7 +138,6 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
 
     @Override
     public Result<Void> deleteUserFeed(String user) {
-
         var preconditionsResult = preconditions.deleteUserFeed(user);
         if (!preconditionsResult.isOK())
             return preconditionsResult;
@@ -185,10 +176,7 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
         public boolean isRemoteUser() {
             return !isLocalUser();
         }
-
     }
-
-    ;
 
     abstract protected void deleteFromUserFeed(String user, Set<Long> mids);
 }

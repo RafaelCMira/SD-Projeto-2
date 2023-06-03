@@ -106,8 +106,6 @@ public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPu
 
     @Override
     public Result<Void> push_PushMessage(PushMessage pm) {
-        log.info("ENTREI NO push_push\n");
-        log.info("PushMessage = " + pm + " ||| \n");
         var msg = pm.getMessage();
         super.messages.put(msg.getId(), msg);
 

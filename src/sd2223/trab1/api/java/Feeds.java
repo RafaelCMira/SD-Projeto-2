@@ -23,6 +23,6 @@ public interface Feeds {
 
     Result<Void> deleteUserFeed(String user);
 
-    Result<Long> checkMsg(String user, String pwd, Message msg);
+    Result<Long> getMsgServerId(String user, String pwd, Message msg);
 
 }

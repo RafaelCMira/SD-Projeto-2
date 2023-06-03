@@ -46,7 +46,7 @@ public class JavaFeedsPushPreconditions extends JavaFeedsPreconditions implement
     }
 
     @Override
-    public Result<Long> checkMsg(String user, String pwd, Message msg) {
+    public Result<Long> getMsgServerId(String user, String pwd, Message msg) {
         if (pwd == null) return Result.error(BAD_REQUEST);
 
         return null;

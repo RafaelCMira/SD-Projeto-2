@@ -44,7 +44,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     public long postMessage(Long version, String user, String pwd, Message msg) {
         writeWaitIfNeeded(version);
 
-        Long mid = super.fromJavaResult(impl.checkMsg(user, pwd, msg));
+        Long mid = super.fromJavaResult(impl.getMsgServerId(user, pwd, msg));
         msg.setId(mid);
 
         KafkaMsg kafkaMsg = new KafkaMsg(KafkaMsg.POST_MESSAGE, user, pwd, null, msg, -1, -1, null, null, false);

@@ -53,7 +53,7 @@ public class SoapFeedsClient<T extends FeedsService> extends SoapClient implemen
     }
 
     @Override
-    public Result<Long> checkMsg(String user, String pwd, Message msg) {
+    public Result<Long> getMsgServerId(String user, String pwd, Message msg) {
         return null;
     }
 
