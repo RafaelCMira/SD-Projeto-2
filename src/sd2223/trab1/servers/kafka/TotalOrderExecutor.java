@@ -2,7 +2,9 @@ package sd2223.trab1.servers.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
+import sd2223.trab1.api.Message;
 import sd2223.trab1.servers.Domain;
+import sd2223.trab1.servers.java.JavaFeedsCommon;
 import sd2223.trab1.servers.java.JavaFeedsPush;
 import sd2223.trab1.servers.kafka.sync.SyncPoint;
 import sd2223.trab1.servers.replication.ReplicationFeedsResource;
@@ -13,6 +15,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 
