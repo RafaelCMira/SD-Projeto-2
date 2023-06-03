@@ -84,7 +84,6 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
     }
 
     private void execPostMessage(long version, KafkaMsg msg) {
-        System.out.println("ENTREI NO POST_MESSAGE");
         impl.postMessage(msg.getUser(), msg.getPwd(), msg.getMsg());
         sync.setResult(version, String.valueOf(msg));
     }

@@ -69,16 +69,14 @@ public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPu
             return preconditionsResult;
 
         var ufi = feeds.get(user);
-        if (ufi == null) {
-            Log.info("user nao existe");
+        if (ufi == null)
             return error(NOT_FOUND);
-        }
+
 
         synchronized (ufi.user()) {
-            if (!ufi.messages().contains(mid)) {
-                Log.info("msg nao existe");
+            if (!ufi.messages().contains(mid))
                 return error(NOT_FOUND);
-            }
+            
             return ok(messages.get(mid));
         }
     }

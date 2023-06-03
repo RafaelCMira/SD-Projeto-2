@@ -55,7 +55,6 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
 
         if (msg.getId() != -1) mid = msg.getId();
 
-        Log.info("Mid javafeeds do stor: " + mid);
         msg.setId(mid);
         msg.setCreationTime(System.currentTimeMillis());
 
@@ -67,11 +66,6 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
         return Result.ok(mid);
     }
 
-    private long correctIdtoclient;
-
-    public long returnCorrectId() {
-        return 0;
-    }
 
     public Result<Long> checkMsg(String user, String pwd, Message msg) {
         var preconditionsResult = preconditions.postMessage(user, pwd, msg);
