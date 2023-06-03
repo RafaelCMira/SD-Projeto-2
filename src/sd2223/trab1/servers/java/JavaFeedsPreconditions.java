@@ -85,11 +85,8 @@ public abstract class JavaFeedsPreconditions implements Feeds {
 
         var ures = getUser(ui);
         if (ures.error() == NOT_FOUND) {
-
-            Log.info("PRECONDIÇAO USER NAO EXISTE");
             return error(NOT_FOUND);
         }
-
 
         return ok();
     }
