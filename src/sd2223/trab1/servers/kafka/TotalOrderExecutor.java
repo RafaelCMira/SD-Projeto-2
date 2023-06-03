@@ -1,23 +1,14 @@
 package sd2223.trab1.servers.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-
-import sd2223.trab1.api.Message;
-import sd2223.trab1.servers.Domain;
-import sd2223.trab1.servers.java.JavaFeedsCommon;
 import sd2223.trab1.servers.java.JavaFeedsPush;
 import sd2223.trab1.servers.kafka.sync.SyncPoint;
-import sd2223.trab1.servers.replication.ReplicationFeedsResource;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
-
 
 public class TotalOrderExecutor extends Thread implements RecordProcessor {
     static final String FROM_BEGINNING = "earliest";
@@ -27,7 +18,7 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
     final SyncPoint<String> sync;
     final JavaFeedsPush impl;
 
-    private static final Logger Log = Logger.getLogger(TotalOrderExecutor.class.getName());
+    private static final Logger log = Logger.getLogger(TotalOrderExecutor.class.getName());
 
     public TotalOrderExecutor(String domain) {
         this.receiver = KafkaSubscriber.createSubscriber(KAFKA_BROKERS, List.of(domain), FROM_BEGINNING);
@@ -35,7 +26,6 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
         this.sync = SyncPoint.getInstance();
         this.impl = JavaFeedsPush.getInstance();
     }
-
 
     @Override
     public void onReceive(ConsumerRecord<String, byte[]> r) {
@@ -49,17 +39,6 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
             case KafkaMsg.DELETE_USER_FEED -> execDeleteUserFeed(version, msg);
             case KafkaMsg.PUSH_MESSAGE -> execPushMessage(version, msg);
             case KafkaMsg.UPDATE_FOLLOWERS -> execUpdateFollowers(version, msg);
-        }
-    }
-
-    public static <T extends Serializable> T deserializeObject(byte[] serializedObject, Class<T> objectType) {
-        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(serializedObject);
-             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream)) {
-            Object object = objectInputStream.readObject();
-            return objectType.cast(object);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
@@ -109,8 +88,11 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
     }
 
     private void execPushMessage(long version, KafkaMsg msg) {
+        log.info("ENTREI NO execPush1\n");
         impl.push_PushMessage(msg.getPushMessage());
+        log.info("ENTREI NO execPush2\n");
         sync.setResult(version, String.valueOf(msg));
+        log.info("ENTREI NO execPush3\n");
     }
 
     private void execUpdateFollowers(long version, KafkaMsg msg) {

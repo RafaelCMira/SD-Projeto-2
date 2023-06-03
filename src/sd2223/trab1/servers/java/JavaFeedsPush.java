@@ -19,8 +19,6 @@ import sd2223.trab1.api.Message;
 import sd2223.trab1.api.PushMessage;
 import sd2223.trab1.api.java.FeedsPush;
 import sd2223.trab1.api.java.Result;
-import sd2223.trab1.servers.Domain;
-import sd2223.trab1.servers.kafka.sync.SyncPoint;
 import sd2223.trab1.servers.replication.ReplicationFeedsResource;
 
 public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPush {
@@ -28,7 +26,7 @@ public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPu
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     final Map<Long, Set<String>> msgs2users = new ConcurrentHashMap<>();
 
-    private static final Logger Log = Logger.getLogger(ReplicationFeedsResource.class.getName());
+    private static final Logger log = Logger.getLogger(ReplicationFeedsResource.class.getName());
     private static JavaFeedsPush instance;
 
     public JavaFeedsPush() {
@@ -72,11 +70,10 @@ public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPu
         if (ufi == null)
             return error(NOT_FOUND);
 
-
         synchronized (ufi.user()) {
             if (!ufi.messages().contains(mid))
                 return error(NOT_FOUND);
-            
+
             return ok(messages.get(mid));
         }
     }
@@ -109,6 +106,8 @@ public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPu
 
     @Override
     public Result<Void> push_PushMessage(PushMessage pm) {
+        log.info("ENTREI NO push_push\n");
+        log.info("PushMessage = " + pm + " ||| \n");
         var msg = pm.getMessage();
         super.messages.put(msg.getId(), msg);
 

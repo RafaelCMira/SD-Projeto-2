@@ -66,14 +66,9 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
     @Override
     public Message getMessage(Long version, String user, long mid) {
-        log.info("ENTREI NO GETMESSAGE1\n");
-
         readWaitIfNeeded(version);
 
-        log.info("ENTREI NO GETMESSAGE2\n");
-
         var result = super.fromJavaResult(impl.getMessage(user, mid));
-        log.info("ENTREI NO GETMESSAGE3\n");
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
                 .encoding(MediaType.APPLICATION_JSON).entity(result).build());
     }
