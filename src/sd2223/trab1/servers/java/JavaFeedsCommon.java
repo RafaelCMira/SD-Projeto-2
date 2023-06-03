@@ -28,6 +28,8 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
 
     final protected T preconditions;
 
+    protected Message lastMsg = null;
+
     protected JavaFeedsCommon(T preconditions) {
         this.preconditions = preconditions;
     }
@@ -47,6 +49,10 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
         if (!preconditionsResult.isOK())
             return preconditionsResult;
 
+        if (lastMsg != null && lastMsg.getText().equals(msg.getText())) {
+            return Result.ok(lastMsg.getId());
+        }
+
         Long mid = serial.incrementAndGet();
 
         if (msg.getId() != -1) mid = msg.getId(); // com isto ja da para usar todo o codigo da mesma forma
@@ -58,8 +64,9 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
         synchronized (ufi.user()) {
             ufi.messages().add(mid);
             messages.putIfAbsent(mid, msg);
+            lastMsg = msg;
         }
-
+     
         return Result.ok(mid);
     }
 
@@ -68,6 +75,7 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
         var preconditionsResult = preconditions.postMessage(user, pwd, msg);
         if (!preconditionsResult.isOK())
             return preconditionsResult;
+
         return Result.ok(serial.incrementAndGet());
     }
 

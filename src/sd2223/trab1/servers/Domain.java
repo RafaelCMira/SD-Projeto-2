@@ -18,7 +18,6 @@ public class Domain {
         return uuid;
     }
 
-
     public static boolean isRemoteUser(String user) {
         var parts = user.split("@");
         return parts.length > 1 && !parts[1].equals(domain);
