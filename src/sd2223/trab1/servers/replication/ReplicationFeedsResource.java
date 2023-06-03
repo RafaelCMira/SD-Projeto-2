@@ -13,7 +13,6 @@ import sd2223.trab1.servers.kafka.KafkaPublisher;
 import sd2223.trab1.servers.kafka.KafkaUtils;
 import sd2223.trab1.servers.kafka.sync.SyncPoint;
 import sd2223.trab1.servers.rest.RestFeedsPushResource;
-import sd2223.trab1.servers.rest.RestFeedsResource;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -45,12 +44,12 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     public long postMessage(Long version, String user, String pwd, Message msg) {
         writeWaitIfNeeded(version);
 
-        Long mid = super.fromJavaResult(impl.checkMsg(user, pwd, msg));
-        msg.setId(mid);
+        // Long mid = super.fromJavaResult(impl.checkMsg(user, pwd, msg));
+        // msg.setId(mid);
 
         KafkaMsg kafkaMsg = new KafkaMsg(KafkaMsg.POST_MESSAGE, user, pwd, null, msg, -1, -1, null, null, false);
         serverVersion = publisher.publish(topic, Domain.get(), kafkaMsg);
-        // sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
+        sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
                 .encoding(MediaType.APPLICATION_JSON).entity(msg.getId()).build());
     }
