@@ -32,6 +32,10 @@ public class ReplicationFeedsServer extends AbstractRestServer {
         // ((ch.qos.logback.classic.Logger) kafkaLogger).setLevel(ch.qos.logback.classic.Level.OFF);
         Args.use(args);
         Domain.set(args[0], Long.valueOf(args[1]));
+        // 2000000001
+        // 4000000001
+        // 6000000001
+        Log.info("Domain uuid: " + Domain.uuid());
         new TotalOrderExecutor(Domain.get());
         new ReplicationFeedsServer().start();
     }
