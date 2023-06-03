@@ -43,15 +43,15 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
 
     @Override
     public Result<Long> postMessage(String user, String pwd, Message msg) {
-        /*var preconditionsResult = preconditions.postMessage(user, pwd, msg);
+        var preconditionsResult = preconditions.postMessage(user, pwd, msg);
         if (!preconditionsResult.isOK())
-            return preconditionsResult;*/
+            return preconditionsResult;
 
-        var res = checkMsg(user, pwd, msg);
-        if (!res.isOK()) return Result.error(res.error());
+        // var res = checkMsg(user, pwd, msg);
+        // if (!res.isOK()) return Result.error(res.error());
 
-        Long mid = res.value();
-        // Long mid = serial.incrementAndGet();
+        //Long mid = res.value();
+        Long mid = serial.incrementAndGet();
         msg.setId(mid);
         msg.setCreationTime(System.currentTimeMillis());
 
@@ -70,8 +70,7 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
         if (!preconditionsResult.isOK())
             return preconditionsResult;
 
-        //  return Result.ok(serial.incrementAndGet());
-        return Result.ok(Domain.generateMessageId());
+        return Result.ok(serial.incrementAndGet());
     }
 
     @Override
