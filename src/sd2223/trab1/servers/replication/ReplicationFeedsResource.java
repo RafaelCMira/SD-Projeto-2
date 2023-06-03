@@ -27,7 +27,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     protected long serverVersion;
     protected final String topic;
 
-    private static final Logger Log = Logger.getLogger(ReplicationFeedsResource.class.getName());
+    private static final Logger log = Logger.getLogger(ReplicationFeedsResource.class.getName());
 
     final protected T impl;
 
@@ -44,14 +44,18 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     public long postMessage(Long version, String user, String pwd, Message msg) {
         writeWaitIfNeeded(version);
 
-        // Long mid = super.fromJavaResult(impl.checkMsg(user, pwd, msg));
-        // msg.setId(mid);
+        log.info("Mid no post de replica: " + msg.getId());
+        Long mid = super.fromJavaResult(impl.checkMsg(user, pwd, msg));
+        msg.setId(mid);
 
         KafkaMsg kafkaMsg = new KafkaMsg(KafkaMsg.POST_MESSAGE, user, pwd, null, msg, -1, -1, null, null, false);
         serverVersion = publisher.publish(topic, Domain.get(), kafkaMsg);
         sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
+        log.info("Mid depois de fazer o post de replica: " + kafkaMsg.getMsg().getId());
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
                 .encoding(MediaType.APPLICATION_JSON).entity(msg.getId()).build());
+
+        // aqui é onde é retornado ao cliente, por isso se nao definirmos aqui o setI devolve sempre -1
     }
 
     @Override
@@ -65,14 +69,14 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
     @Override
     public Message getMessage(Long version, String user, long mid) {
-        Log.info("ENTREI NO GETMESSAGE1\n");
+        log.info("ENTREI NO GETMESSAGE1\n");
 
         readWaitIfNeeded(version);
 
-        Log.info("ENTREI NO GETMESSAGE2\n");
+        log.info("ENTREI NO GETMESSAGE2\n");
 
         var result = super.fromJavaResult(impl.getMessage(user, mid));
-        Log.info("ENTREI NO GETMESSAGE3\n");
+        log.info("ENTREI NO GETMESSAGE3\n");
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
                 .encoding(MediaType.APPLICATION_JSON).entity(result).build());
     }

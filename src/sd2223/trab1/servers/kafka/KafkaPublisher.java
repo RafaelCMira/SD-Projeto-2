@@ -43,15 +43,10 @@ public class KafkaPublisher {
 
     public long publish(String topic, String key, KafkaMsg value) {
         try {
-            Log.info("eNTREI NO PUB1");
             byte[] bytes = serializeObject(value);
-            Log.info("eNTREI NO PUB2");
             ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, key, bytes);
-            Log.info("eNTREI NO PUB3");
             var result = producer.send(record).get();
-            Log.info("eNTREI NO PUB4");
             long offset = result.offset();
-            Log.info("eNTREI NO PUB5");
             return offset;
         } catch (ExecutionException | InterruptedException x) {
             x.printStackTrace();
