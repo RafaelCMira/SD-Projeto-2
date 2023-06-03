@@ -19,6 +19,7 @@ import sd2223.trab1.api.Message;
 import sd2223.trab1.api.PushMessage;
 import sd2223.trab1.api.java.FeedsPush;
 import sd2223.trab1.api.java.Result;
+import sd2223.trab1.servers.Domain;
 import sd2223.trab1.servers.kafka.sync.SyncPoint;
 import sd2223.trab1.servers.replication.ReplicationFeedsResource;
 
