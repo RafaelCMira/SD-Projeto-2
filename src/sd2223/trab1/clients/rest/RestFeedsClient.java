@@ -48,7 +48,7 @@ public class RestFeedsClient extends RestClient implements Feeds {
 
     @Override
     public Result<Long> postMessage(String user, String pwd, Message msg) {
-        return super.reTry(() -> clt_postMessage(user, pwd, msg));
+        return error(NOT_IMPLEMENTED);
     }
 
     @Override
@@ -103,33 +103,6 @@ public class RestFeedsClient extends RestClient implements Feeds {
                 .header(FeedsService.HEADER_VERSION, version)
                 .delete();
 
-        return super.toJavaResult(r, Void.class);
-    }
-
-    private Result<Long> clt_postMessage(String user, String pwd, Message msg) {
-        Response r = target.path(user)
-                .queryParam(FeedsService.PWD, pwd)
-                .request()
-                .header(FeedsService.HEADER_VERSION, version)
-                .post(Entity.entity(msg, MediaType.APPLICATION_JSON));
-        return super.toJavaResult(r, Long.class);
-    }
-
-    private Result<Void> clt_removeFromPersonalFeed(String user, long mid, String pwd) {
-        Response r = target.path(user).path(String.valueOf(mid))
-                .queryParam(FeedsService.PWD, pwd)
-                .request()
-                .header(FeedsService.HEADER_VERSION, version)
-                .delete();
-        return super.toJavaResult(r, Void.class);
-    }
-
-    private Result<Void> clt_subUser(String user, String userSub, String pwd) {
-        Response r = target.path(user).path(userSub)
-                .queryParam(FeedsService.PWD, pwd)
-                .request()
-                .header(FeedsService.HEADER_VERSION, version)
-                .post(Entity.entity(userSub, MediaType.APPLICATION_JSON));
         return super.toJavaResult(r, Void.class);
     }
 }
