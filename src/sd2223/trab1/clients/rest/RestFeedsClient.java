@@ -35,10 +35,6 @@ public class RestFeedsClient extends RestClient implements Feeds {
         return super.reTry(() -> clt_deleteUserFeed(user));
     }
 
-    @Override
-    public Result<Long> getMsgServerId(String user, String pwd, Message msg) {
-        return null;
-    }
 
     @Override
     public Result<Message> getMessage(String user, long mid) {
@@ -72,6 +68,11 @@ public class RestFeedsClient extends RestClient implements Feeds {
 
     @Override
     public Result<List<String>> listSubs(String user) {
+        return error(NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public Result<Long> getMsgServerId(String user, String pwd, Message msg) {
         return error(NOT_IMPLEMENTED);
     }
 
