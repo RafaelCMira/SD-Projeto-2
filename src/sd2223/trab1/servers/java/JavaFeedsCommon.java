@@ -22,7 +22,7 @@ import sd2223.trab1.servers.replication.ReplicationFeedsServer;
 public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
     private static final long FEEDS_MID_PREFIX = 1_000_000_000;
 
-    private static final Logger Log = Logger.getLogger(JavaFeedsCommon.class.getName());
+    private static final Logger log = Logger.getLogger(JavaFeedsCommon.class.getName());
 
     protected AtomicLong serial = new AtomicLong(Domain.uuid() * FEEDS_MID_PREFIX);
 
@@ -59,6 +59,7 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
             ufi.messages().add(mid);
             messages.putIfAbsent(mid, msg);
         }
+
         return Result.ok(mid);
     }
 
