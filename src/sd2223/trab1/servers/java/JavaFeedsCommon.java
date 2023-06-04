@@ -54,7 +54,7 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
         if (lastMsg != null && lastMsg.getText().equals(msg.getText())) {
             canPush = false;
             var toReturn = lastMsg.getId();
-            serial.incrementAndGet();
+            // serial.incrementAndGet();
             return Result.ok(toReturn);
         }
         canPush = true;

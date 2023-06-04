@@ -33,14 +33,17 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
         var version = r.offset();
         KafkaMsg msg = deserializeByteArray(r.value());
         switch (msg.getOperation()) {
-            case KafkaMsg.POST_MESSAGE -> execPostMessage(version, msg);
-            case KafkaMsg.REMOVE_FROM_PERSONAL -> execRemoveFromPersonal(version, msg);
-            case KafkaMsg.SUB -> execSubUser(version, msg);
-            case KafkaMsg.UNSUB -> execUnsubUser(version, msg);
-            case KafkaMsg.DELETE_USER_FEED -> execDeleteUserFeed(version, msg);
-            case KafkaMsg.PUSH_MESSAGE -> execPushMessage(version, msg);
-            case KafkaMsg.UPDATE_FOLLOWERS -> execUpdateFollowers(version, msg);
+            case KafkaMsg.POST_MESSAGE -> impl.postMessage(msg.getUser(), msg.getPwd(), msg.getMsg());
+            case KafkaMsg.REMOVE_FROM_PERSONAL ->
+                    impl.removeFromPersonalFeed(msg.getUser(), msg.getMid(), msg.getPwd());
+            case KafkaMsg.SUB -> impl.subUser(msg.getUser(), msg.getUserSub(), msg.getPwd());
+            case KafkaMsg.UNSUB -> impl.unsubscribeUser(msg.getUser(), msg.getUserSub(), msg.getPwd());
+            case KafkaMsg.DELETE_USER_FEED -> impl.deleteUserFeed(Domain.secret(), msg.getUser());
+            case KafkaMsg.PUSH_MESSAGE -> impl.push_PushMessage(Domain.secret(), msg.getPushMessage());
+            case KafkaMsg.UPDATE_FOLLOWERS ->
+                    impl.push_updateFollowers(Domain.secret(), msg.getUser(), msg.getFollower(), msg.isFollowing());
         }
+        sync.setResult(version, msg);
     }
 
     private KafkaMsg deserializeByteArray(byte[] byteArray) {
@@ -54,7 +57,6 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
         return kafkaMsg;
     }
 
-
     private void sleep(int ms) {
         try {
             Thread.sleep(ms);
@@ -63,39 +65,5 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
         }
     }
 
-    private void execPostMessage(long version, KafkaMsg msg) {
-        impl.postMessage(msg.getUser(), msg.getPwd(), msg.getMsg());
-        sync.setResult(version, msg);
-    }
-
-    private void execRemoveFromPersonal(long version, KafkaMsg msg) {
-        impl.removeFromPersonalFeed(msg.getUser(), msg.getMid(), msg.getPwd());
-        sync.setResult(version, msg);
-    }
-
-    private void execSubUser(long version, KafkaMsg msg) {
-        impl.subUser(msg.getUser(), msg.getUserSub(), msg.getPwd());
-        sync.setResult(version, msg);
-    }
-
-    private void execUnsubUser(long version, KafkaMsg msg) {
-        impl.unsubscribeUser(msg.getUser(), msg.getUserSub(), msg.getPwd());
-        sync.setResult(version, msg);
-    }
-
-    private void execDeleteUserFeed(long version, KafkaMsg msg) {
-        impl.deleteUserFeed(Domain.secret(), msg.getUser());
-        sync.setResult(version, msg);
-    }
-
-    private void execPushMessage(long version, KafkaMsg msg) {
-        impl.push_PushMessage(Domain.secret(), msg.getPushMessage());
-        sync.setResult(version, msg);
-    }
-
-    private void execUpdateFollowers(long version, KafkaMsg msg) {
-        impl.push_updateFollowers(Domain.secret(), msg.getUser(), msg.getFollower(), msg.isFollowing());
-        sync.setResult(version, msg);
-    }
 
 }

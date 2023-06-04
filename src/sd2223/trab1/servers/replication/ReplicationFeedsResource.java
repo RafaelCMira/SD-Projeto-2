@@ -119,8 +119,8 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
 
     protected void writeWaitIfNeeded(Long version) {
-        if (version != null && version > serverVersion) { // se a evrsao da bd for mais atual
-            sync.waitForVersion(version, Integer.MAX_VALUE); //
+        if (version != null && version > serverVersion) {
+            sync.waitForVersion(version, Integer.MAX_VALUE);
         }
 
         if (sync.getVersion() < serverVersion) {
