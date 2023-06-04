@@ -2,6 +2,7 @@ package sd2223.trab1.clients.rest;
 
 import static sd2223.trab1.api.java.Result.error;
 import static sd2223.trab1.api.java.Result.ErrorCode.NOT_IMPLEMENTED;
+import static sd2223.trab1.api.rest.FeedsService.SECRET;
 
 import java.util.List;
 
@@ -31,8 +32,8 @@ public class RestFeedsClient extends RestClient implements Feeds {
     }
 
     @Override
-    public Result<Void> deleteUserFeed(String user) {
-        return super.reTry(() -> clt_deleteUserFeed(user));
+    public Result<Void> deleteUserFeed(String secret, String user) {
+        return super.reTry(() -> clt_deleteUserFeed(secret, user));
     }
 
 
@@ -97,8 +98,8 @@ public class RestFeedsClient extends RestClient implements Feeds {
         });
     }
 
-    public Result<Void> clt_deleteUserFeed(String user) {
-        Response r = target.path(PERSONAL).path(user)
+    public Result<Void> clt_deleteUserFeed(String secret, String user) {
+        Response r = target.path(PERSONAL).path(user).queryParam(SECRET, secret)
                 .request()
                 .header(FeedsService.HEADER_VERSION, version)
                 .delete();

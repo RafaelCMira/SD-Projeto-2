@@ -22,7 +22,7 @@ public class ReplicationFeedsPushResource extends ReplicationFeedsResource<Feeds
     }
 
     @Override
-    public void push_PushMessage(Long version, PushMessage msg) {
+    public void push_PushMessage(String secret, Long version, PushMessage msg) {
         KafkaMsg op = new KafkaMsg(KafkaMsg.PUSH_MESSAGE, null, null, null, null, -1, -1, msg, null, false);
 
         if (sync.getVersion() < serverVersion)
@@ -33,7 +33,7 @@ public class ReplicationFeedsPushResource extends ReplicationFeedsResource<Feeds
     }
 
     @Override
-    public void push_updateFollowers(Long version, String user, String follower, boolean following) {
+    public void push_updateFollowers(String secret, Long version, String user, String follower, boolean following) {
         KafkaMsg op = new KafkaMsg(KafkaMsg.UPDATE_FOLLOWERS, user, null, null, null, -1, -1, null, follower, following);
 
         if (sync.getVersion() < serverVersion)

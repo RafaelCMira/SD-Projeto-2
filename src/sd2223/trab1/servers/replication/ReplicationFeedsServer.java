@@ -28,8 +28,7 @@ public class ReplicationFeedsServer extends AbstractRestServer {
 
     public static void main(String[] args) throws Exception {
         Args.use(args);
-        Domain.set(args[0], Long.valueOf(args[1]));
-        Log.info("Domain uuid: " + Domain.uuid());
+        Domain.set(args[0], Long.valueOf(args[1]), args[2]);
         new TotalOrderExecutor(Domain.get());
         new ReplicationFeedsServer().start();
     }

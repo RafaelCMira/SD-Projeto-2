@@ -25,7 +25,7 @@ public class RestFeedsServer extends AbstractRestServer {
 
     public static void main(String[] args) throws Exception {
         Args.use(args);
-        Domain.set(args[0], Long.valueOf(args[1]));
+        Domain.set(args[0], Long.valueOf(args[1]), args[2]);
         new RestFeedsServer().start();
     }
 }

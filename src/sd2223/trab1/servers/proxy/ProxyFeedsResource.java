@@ -1,6 +1,5 @@
 package sd2223.trab1.servers.proxy;
 
-import jakarta.inject.Singleton;
 import sd2223.trab1.api.Message;
 import sd2223.trab1.api.java.Feeds;
 import sd2223.trab1.api.rest.FeedsService;
@@ -52,8 +51,8 @@ public class ProxyFeedsResource<T extends Feeds> extends RestResource implements
     }
 
     @Override
-    public void deleteUserFeed(Long version, String user) {
-        super.fromJavaResult(impl.deleteUserFeed(user));
+    public void deleteUserFeed(String secret, Long version, String user) {
+        super.fromJavaResult(impl.deleteUserFeed(secret, user));
     }
 
 }

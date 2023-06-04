@@ -32,7 +32,6 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
 
     protected boolean canPush = false;
 
-
     protected JavaFeedsCommon(T preconditions) {
         this.preconditions = preconditions;
     }
@@ -52,18 +51,18 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
         if (!preconditionsResult.isOK())
             return preconditionsResult;
 
-
         if (lastMsg != null && lastMsg.getText().equals(msg.getText())) {
             canPush = false;
             var toReturn = lastMsg.getId();
+            serial.incrementAndGet();
             return Result.ok(toReturn);
         }
         canPush = true;
 
-
         Long mid = serial.incrementAndGet();
 
-        if (msg.getId() != -1) mid = msg.getId(); // com isto ja da para usar todo o codigo da mesma forma
+        if (msg.getId() != -1)
+            mid = msg.getId();
 
         msg.setId(mid);
         msg.setCreationTime(System.currentTimeMillis());
@@ -154,8 +153,8 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
     }
 
     @Override
-    public Result<Void> deleteUserFeed(String user) {
-        var preconditionsResult = preconditions.deleteUserFeed(user);
+    public Result<Void> deleteUserFeed(String secret, String user) {
+        var preconditionsResult = preconditions.deleteUserFeed(secret, user);
         if (!preconditionsResult.isOK())
             return preconditionsResult;
 

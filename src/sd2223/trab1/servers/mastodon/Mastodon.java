@@ -230,7 +230,7 @@ public class Mastodon implements FeedsPush {
     }
 
     @Override
-    public Result<Void> deleteUserFeed(String user) {
+    public Result<Void> deleteUserFeed(String secret, String user) {
         return error(NOT_IMPLEMENTED);
     }
 
@@ -240,12 +240,12 @@ public class Mastodon implements FeedsPush {
     }
 
     @Override
-    public Result<Void> push_updateFollowers(String user, String follower, boolean following) {
+    public Result<Void> push_updateFollowers(String secret, String user, String follower, boolean following) {
         return error(NOT_IMPLEMENTED);
     }
 
     @Override
-    public Result<Void> push_PushMessage(PushMessage msg) {
+    public Result<Void> push_PushMessage(String secret, PushMessage msg) {
         return error(NOT_IMPLEMENTED);
     }
 

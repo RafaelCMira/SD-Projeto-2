@@ -9,25 +9,25 @@ import sd2223.trab1.servers.Domain;
 
 
 public class RestUsersServer extends AbstractRestServer {
-	public static final int PORT = 3456;
-	
-	private static Logger Log = Logger.getLogger(RestUsersServer.class.getName());
+    public static final int PORT = 3456;
 
-	RestUsersServer() {
-		super( Log, Users.SERVICENAME, PORT);
-	}
-	
-	
-	@Override
+    private static Logger Log = Logger.getLogger(RestUsersServer.class.getName());
+
+    RestUsersServer() {
+        super(Log, Users.SERVICENAME, PORT);
+    }
+
+
+    @Override
     protected void registerResources(ResourceConfig config) {
-		config.register( RestUsersResource.class ); 
+        config.register(RestUsersResource.class);
 //		config.register(new GenericExceptionMapper());
 //		config.register(new CustomLoggingFilter());
-	}
-	
-	
-	public static void main(String[] args) throws Exception {
-		Domain.set( args[0], Long.valueOf(args[1]));
-		new RestUsersServer().start();
-	}	
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        Domain.set(args[0], Long.valueOf(args[1]));
+        new RestUsersServer().start();
+    }
 }

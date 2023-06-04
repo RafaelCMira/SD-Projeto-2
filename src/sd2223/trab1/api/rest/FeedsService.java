@@ -17,6 +17,8 @@ public interface FeedsService {
     String DOMAIN = "domain";
     String USERSUB = "userSub";
 
+    String SECRET = "secret";
+
     String PATH = "/feeds";
 
     /**
@@ -128,5 +130,5 @@ public interface FeedsService {
 
     @DELETE
     @Path("/personal/{" + USER + "}")
-    void deleteUserFeed(@HeaderParam(HEADER_VERSION) Long version, @PathParam(USER) String user);
+    void deleteUserFeed(@QueryParam(SECRET) String secret, @HeaderParam(HEADER_VERSION) Long version, @PathParam(USER) String user);
 }

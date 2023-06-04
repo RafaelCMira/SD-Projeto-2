@@ -14,7 +14,7 @@ import sd2223.trab1.servers.kafka.KafkaUtils;
 import sd2223.trab1.servers.kafka.sync.SyncPoint;
 import sd2223.trab1.servers.rest.RestFeedsPushResource;
 
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Singleton
@@ -23,7 +23,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     protected static final int HTTP_OK_VOID = 204;
     public static final String KAFKA_BROKERS = "kafka:9092";
     protected final KafkaPublisher publisher;
-    protected final SyncPoint<String> sync;
+    protected final SyncPoint<KafkaMsg> sync;
     protected long serverVersion;
     protected final String topic;
 
@@ -52,7 +52,6 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
         sync.waitForVersion(serverVersion, Integer.MAX_VALUE);
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
                 .encoding(MediaType.APPLICATION_JSON).entity(msg.getId()).build());
-        // aqui é onde é retornado ao cliente, por isso se nao definirmos aqui o setI devolve sempre -1
     }
 
     @Override
@@ -76,8 +75,8 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     @Override
     public List<Message> getMessages(Long version, String user, long time) {
         readWaitIfNeeded(version);
-
         var result = super.fromJavaResult(impl.getMessages(user, time));
+
         throw new WebApplicationException(Response.status(HTTP_OK).header(HEADER_VERSION, serverVersion)
                 .encoding(MediaType.APPLICATION_JSON).entity(result).build());
     }
@@ -110,7 +109,7 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
     }
 
     @Override
-    public void deleteUserFeed(Long version, String user) {
+    public void deleteUserFeed(String secret, Long version, String user) {
         writeWaitIfNeeded(version);
 
         KafkaMsg op = new KafkaMsg(KafkaMsg.DELETE_USER_FEED, user, null, null, null, -1, -1, null, null, false);
@@ -120,8 +119,8 @@ public class ReplicationFeedsResource<T extends Feeds> extends RestFeedsPushReso
 
 
     protected void writeWaitIfNeeded(Long version) {
-        if (version != null && version > serverVersion) {
-            sync.waitForVersion(version, Integer.MAX_VALUE);
+        if (version != null && version > serverVersion) { // se a evrsao da bd for mais atual
+            sync.waitForVersion(version, Integer.MAX_VALUE); //
         }
 
         if (sync.getVersion() < serverVersion) {

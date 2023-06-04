@@ -20,6 +20,7 @@ import sd2223.trab1.api.Message;
 import sd2223.trab1.api.PushMessage;
 import sd2223.trab1.api.java.FeedsPush;
 import sd2223.trab1.api.java.Result;
+import sd2223.trab1.servers.Domain;
 import sd2223.trab1.servers.replication.ReplicationFeedsResource;
 
 public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPush {
@@ -56,7 +57,8 @@ public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPu
                 for (var e : subscribers.entrySet()) {
                     var domain = e.getKey();
                     var users = e.getValue();
-                    while (!FeedsPushClients.get(domain).push_PushMessage(new PushMessage(users, msg)).isOK()) ;
+                    while (!FeedsPushClients.get(domain).push_PushMessage(Domain.secret(), new PushMessage(users, msg)).isOK())
+                        ;
                 }
             });
         }
@@ -92,9 +94,9 @@ public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPu
     }
 
     @Override
-    public Result<Void> push_updateFollowers(String user, String follower, boolean following) {
+    public Result<Void> push_updateFollowers(String secret, String user, String follower, boolean following) {
 
-        var preconditionsResult = preconditions.push_updateFollowers(user, follower, following);
+        var preconditionsResult = preconditions.push_updateFollowers(Domain.secret(), user, follower, following);
         if (!preconditionsResult.isOK())
             return preconditionsResult;
 
@@ -109,7 +111,7 @@ public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPu
     }
 
     @Override
-    public Result<Void> push_PushMessage(PushMessage pm) {
+    public Result<Void> push_PushMessage(String secret, PushMessage pm) {
         var msg = pm.getMessage();
 
         super.messages.put(msg.getId(), msg);

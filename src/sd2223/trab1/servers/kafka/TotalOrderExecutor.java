@@ -1,6 +1,7 @@
 package sd2223.trab1.servers.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import sd2223.trab1.servers.Domain;
 import sd2223.trab1.servers.java.JavaFeedsPush;
 import sd2223.trab1.servers.kafka.sync.SyncPoint;
 
@@ -15,7 +16,7 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
     static final String KAFKA_BROKERS = "kafka:9092";
 
     final KafkaSubscriber receiver;
-    final SyncPoint<String> sync;
+    final SyncPoint<KafkaMsg> sync;
     final JavaFeedsPush impl;
 
     private static final Logger log = Logger.getLogger(TotalOrderExecutor.class.getName());
@@ -64,37 +65,37 @@ public class TotalOrderExecutor extends Thread implements RecordProcessor {
 
     private void execPostMessage(long version, KafkaMsg msg) {
         impl.postMessage(msg.getUser(), msg.getPwd(), msg.getMsg());
-        sync.setResult(version, String.valueOf(msg));
+        sync.setResult(version, msg);
     }
 
     private void execRemoveFromPersonal(long version, KafkaMsg msg) {
         impl.removeFromPersonalFeed(msg.getUser(), msg.getMid(), msg.getPwd());
-        sync.setResult(version, String.valueOf(msg));
+        sync.setResult(version, msg);
     }
 
     private void execSubUser(long version, KafkaMsg msg) {
         impl.subUser(msg.getUser(), msg.getUserSub(), msg.getPwd());
-        sync.setResult(version, String.valueOf(msg));
+        sync.setResult(version, msg);
     }
 
     private void execUnsubUser(long version, KafkaMsg msg) {
         impl.unsubscribeUser(msg.getUser(), msg.getUserSub(), msg.getPwd());
-        sync.setResult(version, String.valueOf(msg));
+        sync.setResult(version, msg);
     }
 
     private void execDeleteUserFeed(long version, KafkaMsg msg) {
-        impl.deleteUserFeed(msg.getUser());
-        sync.setResult(version, String.valueOf(msg));
+        impl.deleteUserFeed(Domain.secret(), msg.getUser());
+        sync.setResult(version, msg);
     }
 
     private void execPushMessage(long version, KafkaMsg msg) {
-        impl.push_PushMessage(msg.getPushMessage());
-        sync.setResult(version, String.valueOf(msg));
+        impl.push_PushMessage(Domain.secret(), msg.getPushMessage());
+        sync.setResult(version, msg);
     }
 
     private void execUpdateFollowers(long version, KafkaMsg msg) {
-        impl.push_updateFollowers(msg.getUser(), msg.getFollower(), msg.isFollowing());
-        sync.setResult(version, String.valueOf(msg));
+        impl.push_updateFollowers(Domain.secret(), msg.getUser(), msg.getFollower(), msg.isFollowing());
+        sync.setResult(version, msg);
     }
 
 }

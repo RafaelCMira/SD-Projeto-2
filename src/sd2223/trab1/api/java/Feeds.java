@@ -21,7 +21,7 @@ public interface Feeds {
 
     Result<List<String>> listSubs(String user);
 
-    Result<Void> deleteUserFeed(String user);
+    Result<Void> deleteUserFeed(String secret, String user);
 
     Result<Long> getMsgServerId(String user, String pwd, Message msg);
 

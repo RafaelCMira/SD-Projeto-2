@@ -11,6 +11,7 @@ import sd2223.trab1.api.Message;
 import sd2223.trab1.api.PushMessage;
 import sd2223.trab1.api.java.FeedsPush;
 import sd2223.trab1.api.java.Result;
+import sd2223.trab1.servers.Domain;
 import sd2223.trab1.servers.java.JavaFeedsCommon.FeedUser;
 
 public class JavaFeedsPushPreconditions extends JavaFeedsPreconditions implements FeedsPush {
@@ -23,7 +24,7 @@ public class JavaFeedsPushPreconditions extends JavaFeedsPreconditions implement
             return error(ures);
 
         var u2 = FeedUser.from(userSub);
-        var ures2 = FeedsPushClients.get(u2.domain()).push_updateFollowers(userSub, user, true);
+        var ures2 = FeedsPushClients.get(u2.domain()).push_updateFollowers(Domain.secret(), userSub, user, true);
         if (ures2.error() == NOT_FOUND)
             return error(NOT_FOUND);
 
@@ -38,7 +39,7 @@ public class JavaFeedsPushPreconditions extends JavaFeedsPreconditions implement
             return error(ures);
 
         var u2 = FeedUser.from(userSub);
-        var ures2 = FeedsPushClients.get(u2.domain()).push_updateFollowers(userSub, user, false);
+        var ures2 = FeedsPushClients.get(u2.domain()).push_updateFollowers(Domain.secret(), userSub, user, false);
         if (ures2.error() == NOT_FOUND)
             return error(NOT_FOUND);
 
@@ -47,12 +48,15 @@ public class JavaFeedsPushPreconditions extends JavaFeedsPreconditions implement
 
     @Override
     public Result<Long> getMsgServerId(String user, String pwd, Message msg) {
-        return null;
+        return ok();
     }
 
 
     @Override
-    public Result<Void> push_updateFollowers(String user, String follower, boolean following) {
+    public Result<Void> push_updateFollowers(String secret, String user, String follower, boolean following) {
+        if (secret != Domain.secret())
+            return error(FORBIDDEN);
+
         if (user == null)
             return error(BAD_REQUEST);
 
@@ -67,7 +71,9 @@ public class JavaFeedsPushPreconditions extends JavaFeedsPreconditions implement
     }
 
     @Override
-    public Result<Void> push_PushMessage(PushMessage msg) {
+    public Result<Void> push_PushMessage(String secret, PushMessage msg) {
+        if (secret != Domain.secret())
+            return error(FORBIDDEN);
         return ok();
     }
 }

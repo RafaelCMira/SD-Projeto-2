@@ -123,7 +123,7 @@ public abstract class JavaFeedsPreconditions implements Feeds {
     }
 
     @Override
-    public Result<Void> deleteUserFeed(String user) {
+    public Result<Void> deleteUserFeed(String secret, String user) {
         if (user == null)
             return error(BAD_REQUEST);
 
