@@ -30,6 +30,9 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
 
     protected Message lastMsg = null;
 
+    protected boolean canPush = false;
+
+
     protected JavaFeedsCommon(T preconditions) {
         this.preconditions = preconditions;
     }
@@ -49,9 +52,14 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
         if (!preconditionsResult.isOK())
             return preconditionsResult;
 
+
         if (lastMsg != null && lastMsg.getText().equals(msg.getText())) {
-            return Result.ok(lastMsg.getId());
+            canPush = false;
+            var toReturn = lastMsg.getId();
+            return Result.ok(toReturn);
         }
+        canPush = true;
+
 
         Long mid = serial.incrementAndGet();
 
@@ -66,7 +74,7 @@ public abstract class JavaFeedsCommon<T extends Feeds> implements Feeds {
             messages.putIfAbsent(mid, msg);
             lastMsg = msg;
         }
-     
+
         return Result.ok(mid);
     }
 

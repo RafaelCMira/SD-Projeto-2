@@ -5,6 +5,7 @@ import static sd2223.trab1.api.java.Result.ok;
 import static sd2223.trab1.api.java.Result.ErrorCode.NOT_FOUND;
 import static sd2223.trab1.clients.Clients.FeedsPushClients;
 
+import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,6 +43,8 @@ public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPu
     @Override
     public Result<Long> postMessage(String user, String pwd, Message msg) {
         var res = super.postMessage(user, pwd, msg);
+        if (res.isOK() && !canPush) return res;
+
         if (res.isOK()) {
             var followees = feeds.get(user).followees();
 
@@ -57,6 +60,7 @@ public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPu
                 }
             });
         }
+
         return res;
     }
 
@@ -107,6 +111,7 @@ public class JavaFeedsPush extends JavaFeedsCommon<FeedsPush> implements FeedsPu
     @Override
     public Result<Void> push_PushMessage(PushMessage pm) {
         var msg = pm.getMessage();
+
         super.messages.put(msg.getId(), msg);
 
         for (var s : pm.getSubscribers())
